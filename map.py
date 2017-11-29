@@ -1,7 +1,3 @@
-from random import *
-import pygame
-from pygame.locals import *
-pygame.init()
 
 #0 = Tout le monde
 #2 = Flier
@@ -11,7 +7,7 @@ pygame.init()
 #7 = Case depart Ordi
 
 def deplacement(aleatoire):
-	if aleatoire == 1:
+	if aleatoire == 0:
 		#img/Maps/S0102.png
 		return [[0,0,0,0,0,0], 
 			   [0,0,0,0,0,2],
@@ -22,7 +18,7 @@ def deplacement(aleatoire):
 			   [6,3,2,2,2,2],
 			   [0,6,6,0,3,2]]
 
-	if aleatoire == 2:
+	if aleatoire == 1:
 		#img/Maps/S0305.png
 		return [[-1,-1,-1,-1,-1,-1], 
 			   [0,7,7,7,7,0],
@@ -33,7 +29,7 @@ def deplacement(aleatoire):
 			   [0,0,0,0,0,0],
 			   [-1,6,6,6,6,-1]]
 
-	if aleatoire == 3:
+	if aleatoire == 2:
 		#img/Maps/S0405.png
 		return [[0,0,2,0,0,0], 
 			   [0,0,2,0,0,0],
@@ -44,7 +40,7 @@ def deplacement(aleatoire):
 			   [0,0,0,0,0,0],
 			   [0,0,6,6,6,6]]
 
-	if aleatoire == 4:
+	if aleatoire == 3:
 		#img/Maps/S0405.png
 		return [[0,7,7,7,7,3], 
 			   [0,0,0,0,3,0],
@@ -55,7 +51,7 @@ def deplacement(aleatoire):
 			   [0,0,0,0,3,0],
 			   [0,6,6,6,6,0]]
 
-	if aleatoire == 5:
+	if aleatoire == 4:
 		#img/Maps/S1401.png
 		return [[2,0,0,3,3,3], 
 			   [7,7,7,7,0,0],
@@ -66,7 +62,7 @@ def deplacement(aleatoire):
 			   [0,0,0,0,6,6],
 			   [3,0,3,0,6,6]]
 
-	if aleatoire == 6:
+	if aleatoire == 5:
 		#img/Maps/X0022.png"
 		return [[-1,-1,0,3,-1,0], 
 			   [0,0,0,0,-1,7],
@@ -77,7 +73,7 @@ def deplacement(aleatoire):
 			   [3,0,0,0,0,0],
 			   [3,0,0,0,3,7]]
 
-	if aleatoire == 7:
+	if aleatoire == 6:
 		#img/Maps/X0081.png
 		return [[2,0,7,7,7,7], 
 			   [2,0,0,0,3,0],
@@ -88,7 +84,7 @@ def deplacement(aleatoire):
 			   [2,0,0,0,0,0],
 			   [0,0,6,6,6,6]]
 
-	if aleatoire == 8:
+	if aleatoire == 7:
 		#img/Maps/S0202.png
 		return [[0,0,0,2,0,3], 
 			   [0,7,0,0,0,0],
@@ -100,7 +96,7 @@ def deplacement(aleatoire):
 			   [0,2,2,0,0,0]]
 
 
-	if aleatoire == 9:
+	if aleatoire == 8:
 		#img/Maps/S0502.png
 		return [[-1,-1,-1,-1,-1,-1], 
 			   [7,7,-1,-1,7,7],
