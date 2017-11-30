@@ -7,36 +7,10 @@ from function import *
 from copy import *
 
 #crée une fenêtre 540*720 qui affiche l'image choisis
-fenetre = pygame.display.set_mode((540,720),RESIZABLE)
+fenetre = pygame.display.set_mode((900,720),RESIZABLE)
 terrain_disponible=9
 aleatoire=choice(range(terrain_disponible))
-if aleatoire==0:
-    fond = pygame.image.load("img/Maps/S0102.png").convert()
-    print("S0102")
-if aleatoire==1:
-    fond = pygame.image.load("img/Maps/S0305.png").convert()
-    print("S0305")
-if aleatoire==2:
-    fond = pygame.image.load("img/Maps/S0405.png").convert()
-    print("S0405")
-if aleatoire==3:
-    fond = pygame.image.load("img/Maps/S0504.png").convert()
-    print("S0504")
-if aleatoire==4:
-    fond = pygame.image.load("img/Maps/S1401.png").convert()
-    print("S1401")
-if aleatoire==5:
-    fond = pygame.image.load("img/Maps/X0022.png").convert()
-    print("X0022")
-if aleatoire==6:
-    fond = pygame.image.load("img/Maps/X0081.png").convert()
-    print("X0081")
-if aleatoire==7:
-    fond = pygame.image.load("img/Maps/S0202.png").convert()
-    print("S0202")
-if aleatoire==8:
-    fond = pygame.image.load("img/Maps/S0502.png").convert()
-    print("S0502")
+fond=getFond(aleatoire)
     
 t_map=deplacement(aleatoire)
 print(t_map)
@@ -107,15 +81,111 @@ opponent.append([D2,position_D2,3,1,36,38,36,25,28])
 opponent.append([D3,position_D3,3,1,47,36,25,23,30])
 opponent.append([D4,position_D4,2,2,42,52,18,38,17])
 
+#menu droite
+C1_info = pygame.Surface.copy(C1)
+C1_info.set_colorkey((255,255,255))
+position_C1_info = C1_info.get_rect()
+position_C1_info = position_C1_info.move(540,0)
+
+C2_info = pygame.Surface.copy(C2)
+C2_info.set_colorkey((255,255,255))
+position_C2_info = C2_info.get_rect()
+position_C2_info = position_C2_info.move(540,90)
+
+C3_info = pygame.Surface.copy(C3)
+C3_info.set_colorkey((255,255,255))
+position_C3_info = C3_info.get_rect()
+position_C3_info = position_C3_info.move(540,180)
+
+C4_info = pygame.Surface.copy(C4)
+C4_info.set_colorkey((255,255,255))
+position_C4_info = C4_info.get_rect()
+position_C4_info = position_C4_info.move(540,270)
+
+D1_info = pygame.Surface.copy(D1)
+D1_info.set_colorkey((255,255,255))
+position_D1_info = D1_info.get_rect()
+position_D1_info = position_D1_info.move(540,360)
+
+D2_info = pygame.Surface.copy(D2)
+D2_info.set_colorkey((255,255,255))
+position_D2_info = D2_info.get_rect()
+position_D2_info = position_D2_info.move(540,450)
+
+D3_info = pygame.Surface.copy(D3)
+D3_info.set_colorkey((255,255,255))
+position_D3_info = D3_info.get_rect()
+position_D3_info = position_D3_info.move(540,540)
+
+D4_info = pygame.Surface.copy(D4)
+D4_info.set_colorkey((255,255,255))
+position_D4_info = D4_info.get_rect()
+position_D4_info = position_D4_info.move(540,630)
+
+info = []
+info.append([C1_info,position_C1_info])
+info.append([C2_info,position_C2_info])
+info.append([C3_info,position_C3_info])
+info.append([C4_info,position_C4_info])
+info.append([D1_info,position_D1_info])
+info.append([D2_info,position_D2_info])
+info.append([D3_info,position_D3_info])
+info.append([D4_info,position_D4_info])
+
+info_fond=[]
+for i in range(8):
+    current_background=pygame.image.load("img\character_stats.png").convert()
+    info_fond.append([current_background,current_background.get_rect().move(540,90*i)])
+
+for item in info_fond :
+    fenetre.blit(item[0],item[1])
+for item in info :
+    fenetre.blit(item[0],item[1])
+    
 ChoixPerso = 0
 
-continuer=1
+continuer=True
 turn = 0 # 0 = player, 1 = opponent
-
+#vie,atk,speed,def,res 4 5 6 7 8
+i=0
 for item in player :
     fenetre.blit(item[0],item[1])
-for item in opponent :
+    
+    current_hp=pygame.font.SysFont('Arial',23)
+    fenetre.blit(current_hp.render(str(item[4]),True, (255,255,255)),(720,33+(i*90)))
+    
+    current_atk=pygame.font.SysFont('Arial',23)
+    fenetre.blit(current_atk.render(str(item[5]),True, (255,255,255)),(720,63+(i*90)))
+    
+    current_vit=pygame.font.SysFont('Arial',23)
+    fenetre.blit(current_vit.render(str(item[6]),True, (255,255,255)),(840,3+(i*90)))
+    
+    current_def=pygame.font.SysFont('Arial',23)
+    fenetre.blit(current_def.render(str(item[7]),True, (255,255,255)),(840,33+(i*90)))
+    
+    current_res=pygame.font.SysFont('Arial',23)
+    fenetre.blit(current_res.render(str(item[8]),True, (255,255,255)),(840,63+(i*90)))
+    
+    i+=1
+for item in opponent:
     fenetre.blit(item[0],item[1])
+
+    current_hp=pygame.font.SysFont('Arial',23)
+    fenetre.blit(current_hp.render(str(item[4]),True, (255,255,255)),(720,33+(i*90)))
+    
+    current_atk=pygame.font.SysFont('Arial',23)
+    fenetre.blit(current_atk.render(str(item[5]),True, (255,255,255)),(720,63+(i*90)))
+    
+    current_vit=pygame.font.SysFont('Arial',23)
+    fenetre.blit(current_vit.render(str(item[6]),True, (255,255,255)),(840,3+(i*90)))
+    
+    current_def=pygame.font.SysFont('Arial',23)
+    fenetre.blit(current_def.render(str(item[7]),True, (255,255,255)),(840,33+(i*90)))
+    
+    current_res=pygame.font.SysFont('Arial',23)
+    fenetre.blit(current_res.render(str(item[8]),True, (255,255,255)),(840,63+(i*90)))
+    
+    i+=1
 
 turnPlayer = player[:]
 mouvement=copy(turnPlayer[ChoixPerso][2])
