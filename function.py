@@ -117,10 +117,10 @@ def initCharacters(positionPlayer, positionOpponent):
 	aleatoire=choice(range(len(listePersoAvailable)))
 
 	player = []
-	player.append([C1,position_C1,1,3,44,40,28,27,18])
-	player.append([C2,position_C2,2,2,38,41,40,20,30])
-	player.append([C3,position_C3,2,0,41,43,30,29,20])
-	player.append([C4,position_C4,2,0,37,35,25,25,40])
+	player.append([C1,position_C1,1,3,44,40,28,27,18,2,1])
+	player.append([C2,position_C2,2,2,38,41,40,20,30,2,0])
+	player.append([C3,position_C3,2,0,41,43,30,29,20,1,0])
+	player.append([C4,position_C4,2,0,37,35,25,25,40,1,0])
 
 	D1 = pygame.image.load(listePersoAvailable[aleatoire]).convert()
 	D1.set_colorkey((255,255,255))
@@ -153,11 +153,11 @@ def initCharacters(positionPlayer, positionOpponent):
 	listePersoAvailable.remove(listePersoAvailable[aleatoire])
 
 	opponent = []
-	#opponent.append([image,position,deplacement(1 à 3 selon le type_deplacement),type_deplacement(0=infanterie, 1=cavalier, 2=flier, 3=tank)],vie,atk,speed,def,res)
-	opponent.append([D1,position_D1,2,0,50,45,32,18,22])
-	opponent.append([D2,position_D2,3,1,36,38,36,25,28])
-	opponent.append([D3,position_D3,3,1,47,36,25,23,30])
-	opponent.append([D4,position_D4,2,2,42,52,18,38,17])
+	#opponent.append([image,position,deplacement(1 à 3 selon le type_deplacement),type_deplacement(0=infanterie, 1=cavalier, 2=flier, 3=tank)],vie,atk,speed,def,res,distance_attaque(1 = cac, 2 = distance), type_attaque(0 = magie, 1=physique))
+	opponent.append([D1,position_D1,2,0,50,45,32,18,22,1,0])
+	opponent.append([D2,position_D2,3,1,36,38,36,25,28,1,0])
+	opponent.append([D3,position_D3,3,1,47,36,25,23,30,2,1])
+	opponent.append([D4,position_D4,2,2,42,52,18,38,17,1,1])
 	
 	return (player,opponent)
 	
@@ -280,3 +280,53 @@ def displayInfoStats(fenetre,player,opponent):
 		
 		i+=1
 	return fenetre
+
+def getEnemieToAttack(opponent,me):
+	charToAttack=[]
+	for character in opponent:
+		if me[9]==1:
+			# tous les cas ou un adversaire est a une case de moi
+			if character[1].top+90 == me[1].top and character[1].left == me[1].left:
+				charToAttack.append(character)
+			if character[1].top-90 == me[1].top and character[1].left == me[1].left:
+				charToAttack.append(character)
+			if character[1].top == me[1].top and character[1].left+90 == me[1].left:
+				charToAttack.append(character)
+			if character[1].top == me[1].top and character[1].left-90 == me[1].left:
+				charToAttack.append(character)
+		else:
+			# tous les cas ou un adversaire est a deux cases de moi
+			if character[1].top+180 == me[1].top and character[1].left == me[1].left:
+				charToAttack.append(character)
+			if character[1].top-180 == me[1].top and character[1].left == me[1].left:
+				charToAttack.append(character)
+			if character[1].top == me[1].top and character[1].left+180 == me[1].left:
+				charToAttack.append(character)
+			if character[1].top == me[1].top and character[1].left-180 == me[1].left:
+				charToAttack.append(character)
+			if character[1].top+90 == me[1].top and character[1].left+90 == me[1].left:
+				charToAttack.append(character)
+			if character[1].top-90 == me[1].top and character[1].left-90 == me[1].left:
+				charToAttack.append(character)
+			if character[1].top+90 == me[1].top and character[1].left-90 == me[1].left:
+				charToAttack.append(character)
+			if character[1].top-90 == me[1].top and character[1].left+90 == me[1].left:
+				charToAttack.append(character)
+	return charToAttack
+	
+#ne prend pas en compte les faiblesses/resistances pour le moment
+def attack(opponent,me):
+	if me[10]==0:		# attaque magique
+		meDamage=me[5]-oponnent[8]
+		himDamage=oponnent[5]-me[8]
+	else:				# attaque physique
+		meDamage=me[5]-oponnent[7]
+		himDamage=oponnent[5]-me[7]
+	opponent[4]-= meDamage
+	if opponent[4] >0:
+		me[4]-= himDamage
+		if me[6] >= opponent[6]+5:	#my speed >= opponent speed + 5
+			if me[4] >0:
+				opponent[4]-= meDamage
+	return (opponent,me)
+		
