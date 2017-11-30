@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import pymysql
 from caracter import Caracter
 
@@ -80,4 +79,3 @@ except Exception as e:
     raise e  
 finally:  
     db.close()
->>>>>>> 1a15999596ac823658c80ab41022570fae79ad63

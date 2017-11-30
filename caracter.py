@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 class Caracter:
     #Classe de personne
@@ -58,4 +57,3 @@ class Caracter:
               self.vit, "\nMove type: ", self.typeMove,"\ncolor: ", self.color, "\nimage: ",
               self.image, "\narm: ", self.arm, "\nskill: ", self.skill, "\nassist: ", self.assist,
               "\nPassif 1: ",self.p1, "\nPassif 2: ", self.p2, "\nPassif 3: ", self.p3)
->>>>>>> 1a15999596ac823658c80ab41022570fae79ad63
