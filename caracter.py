@@ -2,8 +2,8 @@
 class Caracter:
     #Classe de personne
 
-    def __init__(self, identity, name, hp, atk, defs, res, vit,
-                 typeMove, color, image, arm, skill, assist, p1, p2, p3):
+    def __init__(self, identity, name, typeMove, hp, atk, vit, defs, res,
+                 porte, typeAtk, color, image):
         self.identity = identity
         self.name = name
         self.hp = hp
@@ -14,16 +14,50 @@ class Caracter:
         self.typeMove = typeMove
         self.color = color
         self.image = image
-        self.arm = arm
-        self.skill = skill
-        self.assist = assist
-        self.p1 = p1
-        self.p2 = p2
-        self.p3 = p3
+        self.porte = porte
+        tabMoves = {"infanterie":2, "flier":2, "cavalier":3, "tank":1}
+        self.moves = tabMoves[self.typeMove]
+        self.typeAtk = typeAtk
+        
     
     def display(self):
         print("id: ", self.identity, "\nName: ", self.name, "\nhp: ", self.hp, "\natk: ",
               self.atk,"\ndef: ", self.defs,"\nres: ", self.res, "\nvit: ",
               self.vit, "\nMove type: ", self.typeMove,"\ncolor: ", self.color, "\nimage: ",
-              self.image, "\narm: ", self.arm, "\nskill: ", self.skill, "\nassist: ", self.assist,
-              "\nPassif 1: ",self.p1, "\nPassif 2: ", self.p2, "\nPassif 3: ", self.p3)
+              self.image, "\nporte: ", self.porte, "\nmoves: ", self.moves)
+
+    def getUrl(self):
+        return self.image
+
+    def getName(self):
+        return self.name
+
+    def getHp(self):
+        return self.hp
+
+    def getAtk(self):
+        return self.atk
+
+    def getDef(self):
+        return self.defs
+
+    def getRes(self):
+        return self.res
+    
+    def getVit(self):
+        return self.vit
+    
+    def getMove(self):
+        return self.typeMove
+    
+    def getColor(self):
+        return self.color
+    
+    def getPorte(self):
+        return self.porte
+    
+    def getMoves(self):
+        return self.moves
+    
+    def getTypeAtk(self):
+        return self.typeAtk
