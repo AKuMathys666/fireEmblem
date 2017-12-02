@@ -15,7 +15,7 @@ class Caracter:
         self.color = color
         self.image = image
         self.porte = porte
-        tabMoves = {"infanterie":2, "flier":2, "cavalier":3, "tank":1}
+        tabMoves = {"Infanterie":2, "Flier":2, "Cavalier":3, "Tank":1}
         self.moves = tabMoves[self.typeMove]
         self.typeAtk = typeAtk
         
@@ -48,7 +48,7 @@ class Caracter:
         return self.vit
     
     def getMove(self):
-        return self.typeMove
+        return self.moves
     
     def getColor(self):
         return self.color
@@ -61,3 +61,6 @@ class Caracter:
     
     def getTypeAtk(self):
         return self.typeAtk
+
+    def getTypeMove(self):
+        return self.typeMove

@@ -3,24 +3,25 @@ from pygame.locals import *
 from random import *
 from caracter import *
 import pymysql
+from copy import *
 
 db= pymysql.connect(host="localhost",user="root",  
     password="",db="fire_emblem_db")
 
 def getCaracterFromDb(id):
         cur = db.cursor()
-        sql = "select * from personnage where id = %s"  
+        sql = "select * from personnage where id = %s"
         try:  
-            cur.execute(sql, 1)      
+            cur.execute(sql, id)      
           
-            results = cur.fetchall()    
-          
+            results = cur.fetchall()
+            features = []
             for row in results :
                 for i in range(len(row)):
                     features.append(row[i])
             person = Caracter(features[0],features[1],features[2],features[3],
                               features[4],features[5],features[6],features[7],
-                              features[8],features[9],features[10])
+                              features[8],features[9],features[10],features[11])
             person.display()
             return person
         except Exception as e:  
@@ -48,13 +49,13 @@ def samePos(x,y,player,opponent):
         
 def deplacementValide(x,y,map,player,opponent,type_deplacement):
         
-        if type_deplacement==0:#Infanterie
+        if type_deplacement=="Infanterie":
                 if map[x][y] in (0,3,6,7):
                         return samePos(x,y,player,opponent)
-        elif type_deplacement==1:#Cavalier
+        elif type_deplacement=="Cavalier":
                 if map[x][y] in (0,6,7):
                         return samePos(x,y,player,opponent)
-        elif type_deplacement==2:#Flier
+        elif type_deplacement=="Flier":
                 if map[x][y] in (0,2,3,6,7):
                         return samePos(x,y,player,opponent)
         else:#Tank
@@ -93,60 +94,61 @@ def getFond(aleatoire):
         return fond
         
 def initCharacters(positionPlayer, positionOpponent):
-        c1 = getCaracterFromDb(1)
-        c2 = getCaracterFromDb(2)
-        c3 = getCaracterFromDb(3)
-        c4 = getCaracterFromDb(4)
-        d1 = getCaracterFromDb(5)
-        d2 = getCaracterFromDb(6)
-        d3 = getCaracterFromDb(7)
-        d4 = getCaracterFromDb(8)
+        cur = db.cursor()
+        sql = "select count(*) from personnage"  
+        try:  
+                count=cur.execute(sql)
+                result=cur.fetchone()
+                print(result[0])
+        except Exception as e:  
+                raise e
+		
         listePerso=[]
         #Ajouter la liste des personnages
         #Dans cet exemple seul 2 personnages sont disponible 4 fois chacun mais réelement il faut au oins 8 personnages différents.
-        listePerso.append(c1.getUrl())
-        listePerso.append(c2.getUrl())
-        listePerso.append(c3.getUrl())
-        listePerso.append(c4.getUrl())
-        listePerso.append(d1.getUrl())
-        listePerso.append(d2.getUrl())
-        listePerso.append(d3.getUrl())
-        listePerso.append(d4.getUrl())
+        for i in range(result[0]):
+                listePerso.append(i+1)
         listePersoAvailable = listePerso[:]
 
-        aleatoire=choice(range(len(listePersoAvailable)))
+        aleatoire=choice(listePersoAvailable)
+        print(listePersoAvailable)
+        print(aleatoire)
 
-        C1 = pygame.image.load(listePersoAvailable[aleatoire]).convert()
+        c1 = getCaracterFromDb(aleatoire)
+        C1 = pygame.image.load(c1.getUrl()).convert()
         C1.set_colorkey((255,255,255))
         position_C1 = C1.get_rect()
         position_C1 = position_C1.move(positionPlayer[0][1],positionPlayer[0][0])
-        listePersoAvailable.remove(listePersoAvailable[aleatoire])
+        listePersoAvailable.remove(aleatoire)
 
-        aleatoire=choice(range(len(listePersoAvailable)))
+        aleatoire=choice(listePersoAvailable)
 
-        C2 = pygame.image.load(listePersoAvailable[aleatoire]).convert()
+        c2 = getCaracterFromDb(aleatoire)
+        C2 = pygame.image.load(c2.getUrl()).convert()
         C2.set_colorkey((255,255,255))
         position_C2 = C2.get_rect()
         position_C2 = position_C2.move(positionPlayer[1][1],positionPlayer[1][0])
-        listePersoAvailable.remove(listePersoAvailable[aleatoire])
+        listePersoAvailable.remove(aleatoire)
 
-        aleatoire=choice(range(len(listePersoAvailable)))
+        aleatoire=choice(listePersoAvailable)
 
-        C3 = pygame.image.load(listePersoAvailable[aleatoire]).convert()
+        c3 = getCaracterFromDb(aleatoire)
+        C3 = pygame.image.load(c3.getUrl()).convert()
         C3.set_colorkey((255,255,255))
         position_C3 = C3.get_rect()
         position_C3 = position_C3.move(positionPlayer[2][1],positionPlayer[2][0])
-        listePersoAvailable.remove(listePersoAvailable[aleatoire])
+        listePersoAvailable.remove(aleatoire)
 
-        aleatoire=choice(range(len(listePersoAvailable)))
+        aleatoire=choice(listePersoAvailable)
 
-        C4 = pygame.image.load(listePersoAvailable[aleatoire]).convert()
+        c4 = getCaracterFromDb(aleatoire)
+        C4 = pygame.image.load(c4.getUrl()).convert()
         C4.set_colorkey((255,255,255))
         position_C4 = C4.get_rect()
         position_C4 = position_C4.move(positionPlayer[3][1],positionPlayer[3][0])
-        listePersoAvailable.remove(listePersoAvailable[aleatoire])
+        listePersoAvailable.remove(aleatoire)
         
-        aleatoire=choice(range(len(listePersoAvailable)))
+        aleatoire=choice(listePersoAvailable)
 
         player = []
         #img, pos, déplace, typeDéplace, vie, atk,speed,def,res,distance_attaque,type_attaque
@@ -162,35 +164,39 @@ def initCharacters(positionPlayer, positionOpponent):
         player.append([C3,position_C3,c3])
         player.append([C4,position_C4,c4])
 
-        D1 = pygame.image.load(listePersoAvailable[aleatoire]).convert()
+        d1 = getCaracterFromDb(aleatoire)
+        D1 = pygame.image.load(d1.getUrl()).convert()
         D1.set_colorkey((255,255,255))
         position_D1 = D1.get_rect()
         position_D1 = position_D1.move(positionOpponent[0][1],positionOpponent[0][0])
-        listePersoAvailable.remove(listePersoAvailable[aleatoire])
+        listePersoAvailable.remove(aleatoire)
         
-        aleatoire=choice(range(len(listePersoAvailable)))
+        aleatoire=choice(listePersoAvailable)
 
-        D2 = pygame.image.load(listePersoAvailable[aleatoire]).convert()
+        d2 = getCaracterFromDb(aleatoire)
+        D2 = pygame.image.load(d2.getUrl()).convert()
         D2.set_colorkey((255,255,255))
         position_D2 = D2.get_rect()
         position_D2 = position_D2.move(positionOpponent[1][1],positionOpponent[1][0])
-        listePersoAvailable.remove(listePersoAvailable[aleatoire])
+        listePersoAvailable.remove(aleatoire)
         
-        aleatoire=choice(range(len(listePersoAvailable)))
+        aleatoire=choice(listePersoAvailable)
 
-        D3 = pygame.image.load(listePersoAvailable[aleatoire]).convert()
+        d3 = getCaracterFromDb(aleatoire)
+        D3 = pygame.image.load(d3.getUrl()).convert()
         D3.set_colorkey((255,255,255))
         position_D3 = D3.get_rect()
         position_D3 = position_D3.move(positionOpponent[2][1],positionOpponent[2][0])
-        listePersoAvailable.remove(listePersoAvailable[aleatoire])
+        listePersoAvailable.remove(aleatoire)
         
-        aleatoire=choice(range(len(listePersoAvailable)))
+        aleatoire=choice(listePersoAvailable)
 
-        D4 = pygame.image.load(listePersoAvailable[aleatoire]).convert()
+        d4 = getCaracterFromDb(aleatoire)
+        D4 = pygame.image.load(d4.getUrl()).convert()
         D4.set_colorkey((255,255,255))
         position_D4 = D4.get_rect()
         position_D4 = position_D4.move(positionOpponent[3][1],positionOpponent[3][0])
-        listePersoAvailable.remove(listePersoAvailable[aleatoire])
+        listePersoAvailable.remove(aleatoire)
 
         opponent = []
         #opponent.append([image,position,deplacement(1 à 3 selon le type_deplacement),type_deplacement(0=infanterie, 1=cavalier, 2=flier, 3=tank)],vie,atk,speed,def,res,distance_attaque(1 = cac, 2 = distance), type_attaque(0 = magie, 1=physique))
@@ -283,19 +289,19 @@ def displayInfoStats(fenetre,player,opponent):
 
                 #display info stats
                 current_hp=pygame.font.SysFont('Arial',23)
-                fenetre.blit(current_hp.render(str(item[4]),True, (255,255,255)),(720,33+(i*90)))
+                fenetre.blit(current_hp.render(str(item[2].getHp()),True, (255,255,255)),(720,33+(i*90)))
                 
                 current_atk=pygame.font.SysFont('Arial',23)
-                fenetre.blit(current_atk.render(str(item[5]),True, (255,255,255)),(720,63+(i*90)))
+                fenetre.blit(current_atk.render(str(item[2].getAtk()),True, (255,255,255)),(720,63+(i*90)))
                 
                 current_vit=pygame.font.SysFont('Arial',23)
-                fenetre.blit(current_vit.render(str(item[6]),True, (255,255,255)),(840,3+(i*90)))
+                fenetre.blit(current_vit.render(str(item[2].getVit()),True, (255,255,255)),(840,3+(i*90)))
                 
                 current_def=pygame.font.SysFont('Arial',23)
-                fenetre.blit(current_def.render(str(item[7]),True, (255,255,255)),(840,33+(i*90)))
+                fenetre.blit(current_def.render(str(item[2].getDef()),True, (255,255,255)),(840,33+(i*90)))
                 
                 current_res=pygame.font.SysFont('Arial',23)
-                fenetre.blit(current_res.render(str(item[8]),True, (255,255,255)),(840,63+(i*90)))
+                fenetre.blit(current_res.render(str(item[2].getRes()),True, (255,255,255)),(840,63+(i*90)))
                 
                 i+=1
         for item in opponent:
@@ -304,19 +310,19 @@ def displayInfoStats(fenetre,player,opponent):
 
                 #display info stats
                 current_hp=pygame.font.SysFont('Arial',23)
-                fenetre.blit(current_hp.render(str(item[4]),True, (255,255,255)),(720,33+(i*90)))
+                fenetre.blit(current_hp.render(str(item[2].getHp()),True, (255,255,255)),(720,33+(i*90)))
                 
                 current_atk=pygame.font.SysFont('Arial',23)
-                fenetre.blit(current_atk.render(str(item[5]),True, (255,255,255)),(720,63+(i*90)))
+                fenetre.blit(current_atk.render(str(item[2].getAtk()),True, (255,255,255)),(720,63+(i*90)))
                 
                 current_vit=pygame.font.SysFont('Arial',23)
-                fenetre.blit(current_vit.render(str(item[6]),True, (255,255,255)),(840,3+(i*90)))
+                fenetre.blit(current_vit.render(str(item[2].getVit()),True, (255,255,255)),(840,3+(i*90)))
                 
                 current_def=pygame.font.SysFont('Arial',23)
-                fenetre.blit(current_def.render(str(item[7]),True, (255,255,255)),(840,33+(i*90)))
+                fenetre.blit(current_def.render(str(item[2].getDef()),True, (255,255,255)),(840,33+(i*90)))
                 
                 current_res=pygame.font.SysFont('Arial',23)
-                fenetre.blit(current_res.render(str(item[8]),True, (255,255,255)),(840,63+(i*90)))
+                fenetre.blit(current_res.render(str(item[2].getRes()),True, (255,255,255)),(840,63+(i*90)))
                 
                 i+=1
         return fenetre
