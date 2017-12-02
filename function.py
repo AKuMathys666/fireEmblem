@@ -330,7 +330,7 @@ def displayInfoStats(fenetre,player,opponent):
 def getEnemieToAttack(opponent,me):
         charToAttack=[]
         for character in opponent:
-                if me[9]==1:
+                if me[2].getPorte()==1:
                         # tous les cas ou un adversaire est a une case de moi
                         if character[1].top+90 == me[1].top and character[1].left == me[1].left:
                                 charToAttack.append(character)
@@ -362,17 +362,17 @@ def getEnemieToAttack(opponent,me):
         
 #ne prend pas en compte les faiblesses/resistances pour le moment
 def attack(opponent,me):
-        if me[10]==0:                # attaque magique
-                meDamage=me[5]-oponnent[8]
-                himDamage=oponnent[5]-me[8]
+        if me[2].getTypeAtk()==0:                # attaque magique
+                meDamage=me[2].getAtk()-oponnent[2].getRes()
+                himDamage=oponnent[2].getAtk()-me[2].getRes()
         else:                                # attaque physique
-                meDamage=me[5]-oponnent[7]
-                himDamage=oponnent[5]-me[7]
-        opponent[4]-= meDamage
-        if opponent[4] >0:
-                me[4]-= himDamage
-                if me[6] >= opponent[6]+5:        #my speed >= opponent speed + 5
-                        if me[4] >0:
-                                opponent[4]-= meDamage
+                meDamage=me[2].getAtk()-oponnent[2].getDef()
+                himDamage=oponnent[2].getAtk()-me[2].getDef()
+        opponent[2].hp-= meDamage
+        if opponent[2].getHp() >0:
+                me[2].hp-= himDamage
+                if me[2].getVit() >= opponent[2].getVit()+5:        #my speed >= opponent speed + 5
+                        if me[2].getHp() >0:
+                                opponent[2].hp-= meDamage
         return (opponent,me)
                 
