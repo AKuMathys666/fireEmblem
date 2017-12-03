@@ -281,13 +281,68 @@ def displayInfoBackground(fenetre,player,opponent):
                 fenetre.blit(item[0],item[1])
                 
         return fenetre
+
+def getWeaponType(me):
+        if me.getColor()=="Rouge":
+                if me.getPorte()==1:
+                        if me.getTypeAtk()=="Magique":
+                                return "img\char_type\c_redrake.png"
+                        else:
+                                return "img\char_type\c_epée.png"
+                else:
+                        return "img\char_type\c_redbook.png"
+        elif me.getColor()=="Bleu":
+                if me.getPorte()==1:
+                        if me.getTypeAtk()=="Magique":
+                                return "img\char_type\c_bluedrake.png"
+                        else:
+                                return "img\char_type\c_lance.png"
+                else:
+                        return "img\char_type\c_bluebook.png"
+        elif me.getColor()=="Gris":
+                if me.getTypeAtk()=="Magique":
+                        return "img\char_type\c_wizard.png"
+                else:
+                        return "img\char_type\c_archer.png"
+        else:
+                if me.getPorte()==1:
+                        if me.getTypeAtk()=="Magique":
+                                return "img\char_type\c_greendrake.png"
+                        else:
+                                return "img\char_type\c_axe.png"
+                else:
+                        return "img\char_type\c_greenbook.png"
         
 def displayInfoStats(fenetre,player,opponent):
         i=0
+        property_chara=[]
+        property_chara_weapon=[]
         for item in player :
                 #display character
                 fenetre.blit(item[0],item[1])
 
+                #display typeMove
+                if item[2].getTypeMove()=="Tank":
+                        current_move=pygame.image.load("img\char_type\c_tank.png").convert()
+                        current_move.set_colorkey((255,255,255))
+                elif item[2].getTypeMove()=="Infanterie":
+                        current_move=pygame.image.load("img\char_type\c_infanterie.png").convert()
+                        current_move.set_colorkey((255,255,255))
+                elif item[2].getTypeMove()=="Cavalier":
+                        current_move=pygame.image.load("img\char_type\c_cavalier.png").convert()
+                        current_move.set_colorkey((255,255,255))
+                else:
+                        current_move=pygame.image.load("img\char_type\c_flier.png").convert()
+                        current_move.set_colorkey((255,255,255))
+                        
+                property_chara.append([current_move,current_move.get_rect().move(865,90*i)])
+
+                #display typeWeap
+                current_weap=pygame.image.load(getWeaponType(item[2])).convert()
+                current_weap.set_colorkey((255,255,255))
+                        
+                property_chara_weapon.append([current_weap,current_weap.get_rect().move(865,30+(90*i))])
+                
                 #display info stats
                 current_name=pygame.font.SysFont('Arial',23)
                 fenetre.blit(current_name.render(str(item[2].getName()),True, (255,255,255)),(650,3+(i*90)))
@@ -312,6 +367,28 @@ def displayInfoStats(fenetre,player,opponent):
                 #display character
                 fenetre.blit(item[0],item[1])
 
+                #display typeMove
+                if item[2].getTypeMove()=="Tank":
+                        current_move=pygame.image.load("img\char_type\c_tank.png").convert()
+                        current_move.set_colorkey((255,255,255))
+                elif item[2].getTypeMove()=="Infanterie":
+                        current_move=pygame.image.load("img\char_type\c_infanterie.png").convert()
+                        current_move.set_colorkey((255,255,255))
+                elif item[2].getTypeMove()=="Cavalier":
+                        current_move=pygame.image.load("img\char_type\c_cavalier.png").convert()
+                        current_move.set_colorkey((255,255,255))
+                else:
+                        current_move=pygame.image.load("img\char_type\c_flier.png").convert()
+                        current_move.set_colorkey((255,255,255))
+                        
+                property_chara.append([current_move,current_move.get_rect().move(865,90*i)])
+
+                #display typeWeap
+                current_weap=pygame.image.load(getWeaponType(item[2])).convert()
+                current_weap.set_colorkey((255,255,255))
+                        
+                property_chara_weapon.append([current_weap,current_weap.get_rect().move(865,30+(90*i))])
+                
                 #display info stats
                 current_name=pygame.font.SysFont('Arial',23)
                 fenetre.blit(current_name.render(str(item[2].getName()),True, (255,255,255)),(650,3+(i*90)))
@@ -332,6 +409,10 @@ def displayInfoStats(fenetre,player,opponent):
                 fenetre.blit(current_res.render(str(item[2].getRes()),True, (255,255,255)),(840,63+(i*90)))
                 
                 i+=1
+        for item in property_chara :
+                fenetre.blit(item[0],item[1])
+        for item in property_chara_weapon :
+                fenetre.blit(item[0],item[1])
         return fenetre
 
 def getEnemieToAttack(opponent,me):

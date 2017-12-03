@@ -158,6 +158,7 @@ while continuer :
                         else:
                             print("Un ou plusieurs enemies sont a porté d'attaque. Entrez le numero correspondant afin d'attaquer le personnage ciblé:")
                             i=1
+                            print("0 pour ne pas attaquer")
                             for ciblePossible in cible:
                                 print(i,ciblePossible[2].getName())
                                 i+=1
@@ -178,6 +179,8 @@ while continuer :
                                                     opponent[getCharName(opponent,turnPlayer[ChoixPerso][2].getName())][2].hp=turnPlayer[ChoixPerso][2].getHp()
                                                     answer=False
                                             i+=1
+                                    if event2.type == K_0:
+                                        answer=False
                             fenetre=displayInfoBackground(fenetre,player,opponent)
                             fenetre=displayInfoStats(fenetre,player,opponent)
                         turnPlayer.remove(turnPlayer[ChoixPerso])
@@ -226,6 +229,8 @@ while continuer :
                                                     opponent[getCharName(opponent,turnPlayer[ChoixPerso][2].getName())][2].hp=turnPlayer[ChoixPerso][2].getHp()
                                                     answer=False
                                             i+=1
+                                    if event2.type == K_0:
+                                        answer=False
                             fenetre=displayInfoBackground(fenetre,player,opponent)
                             fenetre=displayInfoStats(fenetre,player,opponent)
                         turnPlayer.remove(turnPlayer[ChoixPerso])

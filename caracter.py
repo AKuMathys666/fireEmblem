@@ -21,11 +21,11 @@ class Caracter:
         
     
     def display(self):
-        print("id: ", self.identity, "\nName: ", self.name, "\nhp: ", self.hp, "\natk: ",
-              self.atk,"\ndef: ", self.defs,"\nres: ", self.res, "\nvit: ",
-              self.vit, "\nMove type: ", self.typeMove,"\ncolor: ", self.color, "\nimage: ",
-              self.image, "\nporte: ", self.porte, "\nmoves: ", self.moves)
-
+        #print("id: ", self.identity, ", Name: ", self.name, ", hp: ", self.hp, ", atk: ",
+        #      self.atk,", def: ", self.defs,", res: ", self.res, ", vit: ",
+        #      self.vit, ", Move type: ", self.typeMove,", color: ", self.color, ", image: ",
+        #      self.image, ", porte: ", self.porte, ", moves: ", self.moves)
+        print(self.name)
     def getUrl(self):
         return self.image
 
