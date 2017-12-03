@@ -502,11 +502,19 @@ def getCharName(listChara,name):
 
 def advantage(me,opponent):
         adv = {"Rouge":"Vert", "Gris":"Rien", "Bleu":"Rouge", "Vert":"Bleu"}
+        if me[2].getColor()=="Gris":
+                if opponent[2].getTypeMove()=="Flier":
+                        print("20% Bonus de dégat pour avantage archer pour ",me[2].getName())
+                        return 1.2
+        if opponent[2].getColor()=="Gris":
+                if me[2].getTypeMove()=="Flier":
+                        print("-20% Malus de dégat pour désavantage archer pour ",me[2].getName())
+                        return 0.8
         if adv[me[2].getColor()] == opponent[2].getColor():
                 print("20% Bonus de dégat pour avantage de couleur pour ",me[2].getName())
                 return 1.2
         if adv[opponent[2].getColor()] == me[2].getColor():
-                print("-20% Bonus pour desavantage de couleur pour ",opponent[2].getName())
+                print("-20% Malus pour désavantage de couleur pour ",opponent[2].getName())
                 return 0.8
         return 1
 
