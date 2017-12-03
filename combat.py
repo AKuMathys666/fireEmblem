@@ -179,7 +179,7 @@ while continuer :
                                                     opponent[getCharName(opponent,turnPlayer[ChoixPerso][2].getName())][2].hp=turnPlayer[ChoixPerso][2].getHp()
                                                     answer=False
                                             i+=1
-                                    if event2.type == K_0:
+                                    if event2.key == K_0:
                                         answer=False
                             fenetre=displayInfoBackground(fenetre,player,opponent)
                             fenetre=displayInfoStats(fenetre,player,opponent)
@@ -209,6 +209,7 @@ while continuer :
                         else:
                             print("Un ou plusieurs enemies sont a porté d'attaque. Entrez le numero correspondant afin d'attaquer le personnage ciblé:")
                             i=1
+                            print("0 pour ne pas attaquer")
                             for ciblePossible in cible:
                                 print(i,ciblePossible[2].getName())
                                 i+=1
@@ -229,7 +230,7 @@ while continuer :
                                                     opponent[getCharName(opponent,turnPlayer[ChoixPerso][2].getName())][2].hp=turnPlayer[ChoixPerso][2].getHp()
                                                     answer=False
                                             i+=1
-                                    if event2.type == K_0:
+                                    if event2.key == K_0:
                                         answer=False
                             fenetre=displayInfoBackground(fenetre,player,opponent)
                             fenetre=displayInfoStats(fenetre,player,opponent)
@@ -247,10 +248,6 @@ while continuer :
                         mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
                         pygame.display.flip()
     if turn==0 :
-        print("--------------------- TOUR",numTour,"-------------------------")
-        print("-------------------- Joueur 2 ------------------------")
-        numTour+=1
-        
         turn=1
         turnPlayer = []
         for item in opponent:
@@ -261,12 +258,12 @@ while continuer :
             characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
         else:
             continuer=False
-        print("Tour de ",turnPlayer[ChoixPerso][2].getName())
+        if turnPlayer :
+            print("--------------------- TOUR",numTour,"-------------------------")
+            print("-------------------- Joueur 2 ------------------------")
+            numTour+=1
+            print("Tour de ",turnPlayer[ChoixPerso][2].getName())
     else :
-        print("--------------------- TOUR",numTour,"-------------------------")
-        print("-------------------- Joueur 1 ------------------------")
-        numTour+=1
-        
         turn=0
         for item in player:
             if item[2].getHp()!=0:
@@ -276,7 +273,11 @@ while continuer :
             characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
         else:
             continuer=False
-        print("Tour de ",turnPlayer[ChoixPerso][2].getName())
+        if turnPlayer :
+            print("--------------------- TOUR",numTour,"-------------------------")
+            print("-------------------- Joueur 1 ------------------------")
+            numTour+=1
+            print("Tour de ",turnPlayer[ChoixPerso][2].getName())
 
 fenetre=displayInfoBackground(fenetre,player,opponent)
 fenetre=displayInfoStats(fenetre,player,opponent)
