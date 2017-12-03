@@ -373,24 +373,36 @@ def getEnemieToAttack(opponent,me):
 #ne prend pas en compte les faiblesses/resistances pour le moment
 def attack(opponent,me):
         if me[2].getTypeAtk()==0:                # attaque magique
-                meDamage=me[2].getAtk()-opponent[2].getRes()
-                himDamage=opponent[2].getAtk()-me[2].getRes()
+                #print(advantage(me,opponent))
+                meDamage=int(round(advantage(me,opponent)*me[2].getAtk()))-opponent[2].getRes()
+                himDamage=int(round(advantage(opponent,me)*opponent[2].getAtk()))-me[2].getRes()
         else:                                # attaque physique
-                meDamage=me[2].getAtk()-opponent[2].getDef()
-                himDamage=opponent[2].getAtk()-me[2].getDef()
+                #print(advantage(opponent,me))
+                meDamage=int(round(advantage(me,opponent)*me[2].getAtk()))-opponent[2].getDef()
+                himDamage=int(round(advantage(opponent,me)*opponent[2].getAtk()))-me[2].getDef()
         if meDamage < 0:
                 meDamage=0
         if himDamage < 0:
                 himDamage=0
         opponent[2].hp-= meDamage
         print(me[2].getName()," inflige ",meDamage," dégat à ",opponent[2].getName())
+        if isBrave(me):
+                opponent[2].hp-= meDamage
+                print(me[2].getName()," inflige à nouveau ",meDamage," dégat à ",opponent[2].getName(),"(Brave weapon)")
         if opponent[2].getHp() >0:
                 me[2].hp-= himDamage
                 print(opponent[2].getName()," inflige ",himDamage," dégat à ",me[2].getName())
+                if isBrave(opponent):
+                        me[2].hp-= himDamage
+                        print(opponent[2].getName()," inflige à nouveau ",himDamage," dégat à ",me[2].getName(),"(Brave weapon)")
+                
                 if me[2].getVit() >= opponent[2].getVit()+5:        #my speed >= opponent speed + 5
                         if me[2].getHp() >0:
                                 opponent[2].hp-= meDamage
                                 print(me[2].getName()," inflige ",meDamage," dégat à ",opponent[2].getName())
+                                if isBrave(me):
+                                        opponent[2].hp-= meDamage
+                                        print(me[2].getName()," inflige à nouveau ",meDamage," dégat à ",opponent[2].getName(),"(Brave weapon)")
         if opponent[2].getHp() < 0:
                 opponent[2].hp=0
                 print(opponent[2].getName()," est hors combat.")
@@ -405,3 +417,18 @@ def getCharName(listChara,name):
                 if pers[2].getName()==name:
                         return i
                 i+=1
+
+def advantage(me,opponent):
+        adv = {"Rouge":"Vert", "Gris":"Rien", "Bleu":"Rouge", "Vert":"Bleu"}
+        if adv[me[2].getColor()] == opponent[2].getColor():
+                print("20% Bonus de dégat pour avantage de couleur pour ",me[2].getName())
+                return 1.2
+        if adv[opponent[2].getColor()] == me[2].getColor():
+                print("-20% Bonus pour desavantage de couleur pour ",opponent[2].getName())
+                return 0.8
+        return 1
+
+def isBrave(me):
+        if me[2].getName() in ('Camilla','Barst','Raven','Cain','Draug','Ogma','Luke','Arden','Gordin','Klein','Abel','Hinoka','Cordelia','Donnel'):
+                return True
+        return False
