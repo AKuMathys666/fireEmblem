@@ -453,7 +453,7 @@ def getEnemieToAttack(opponent,me):
         
 #ne prend pas en compte les faiblesses/resistances pour le moment
 def attack(opponent,me):
-        if me[2].getTypeAtk()==0:                # attaque magique
+        if me[2].getTypeAtk()=="Magique":                # attaque magique
                 #print(advantage(me,opponent))
                 meDamage=int(round(advantage(me,opponent)*me[2].getAtk()))-opponent[2].getRes()
                 himDamage=int(round(advantage(opponent,me)*opponent[2].getAtk()))-me[2].getRes()
@@ -508,13 +508,13 @@ def advantage(me,opponent):
                         return 1.2
         if opponent[2].getColor()=="Gris":
                 if me[2].getTypeMove()=="Flier":
-                        print("-20% Malus de dégat pour désavantage archer pour ",me[2].getName())
+                        print("-20% Malus de dégat pour désavantage archer pour ",[2].getName())
                         return 0.8
         if adv[me[2].getColor()] == opponent[2].getColor():
                 print("20% Bonus de dégat pour avantage de couleur pour ",me[2].getName())
                 return 1.2
         if adv[opponent[2].getColor()] == me[2].getColor():
-                print("-20% Malus pour désavantage de couleur pour ",opponent[2].getName())
+                print("-20% Malus pour désavantage de couleur pour ",me[2].getName())
                 return 0.8
         return 1
 

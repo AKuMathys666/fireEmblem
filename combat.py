@@ -178,9 +178,10 @@ while continuer :
                                                     player[getCharName(player,cible[i][2].getName())],turnPlayer[ChoixPerso]=attack(cible[i],turnPlayer[ChoixPerso])
                                                     opponent[getCharName(opponent,turnPlayer[ChoixPerso][2].getName())][2].hp=turnPlayer[ChoixPerso][2].getHp()
                                                     answer=False
+                                            if event2.key == K_0:
+                                                answer=False
                                             i+=1
-                                    if event2.key == K_0:
-                                        answer=False
+                                    
                             fenetre=displayInfoBackground(fenetre,player,opponent)
                             fenetre=displayInfoStats(fenetre,player,opponent)
                         turnPlayer.remove(turnPlayer[ChoixPerso])
@@ -188,6 +189,20 @@ while continuer :
                             ChoixPerso+=1
                         else:
                             ChoixPerso=0
+                        if turn==0:
+                            alive = []
+                            for chara in opponent:
+                                if chara[2].getHp()!=0:
+                                    alive.append(chara)
+                            if not alive:
+                                continuer=False
+                        else:
+                            alive = []
+                            for chara in player:
+                                if chara[2].getHp()!=0:
+                                    alive.append(chara)
+                            if not alive:
+                                continuer=False
                         if len(turnPlayer)!=0:
                             mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
                             characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
@@ -229,9 +244,9 @@ while continuer :
                                                     player[getCharName(player,cible[i][2].getName())],turnPlayer[ChoixPerso]=attack(cible[i],turnPlayer[ChoixPerso])
                                                     opponent[getCharName(opponent,turnPlayer[ChoixPerso][2].getName())][2].hp=turnPlayer[ChoixPerso][2].getHp()
                                                     answer=False
+                                            if event2.key == K_0:
+                                                answer=False
                                             i+=1
-                                    if event2.key == K_0:
-                                        answer=False
                             fenetre=displayInfoBackground(fenetre,player,opponent)
                             fenetre=displayInfoStats(fenetre,player,opponent)
                         turnPlayer.remove(turnPlayer[ChoixPerso])
@@ -239,6 +254,20 @@ while continuer :
                             ChoixPerso+=1
                         else:
                             ChoixPerso=0
+                        if turn==0:
+                            alive = []
+                            for chara in opponent:
+                                if chara[2].getHp()!=0:
+                                    alive.append(chara)
+                            if not alive:
+                                continuer=False
+                        else:
+                            alive = []
+                            for chara in player:
+                                if chara[2].getHp()!=0:
+                                    alive.append(chara)
+                            if not alive:
+                                continuer=False
                         if len(turnPlayer)!=0:
                             mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
                             characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
