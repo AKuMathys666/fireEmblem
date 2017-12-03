@@ -22,7 +22,7 @@ def getCaracterFromDb(id):
             person = Caracter(features[0],features[1],features[2],features[3],
                               features[4],features[5],features[6],features[7],
                               features[8],features[9],features[10],features[11])
-            person.display()
+            #person.display()
             return person
         except Exception as e:  
             raise e
@@ -101,7 +101,6 @@ def initCharacters(positionPlayer, positionOpponent):
         try:  
                 count=cur.execute(sql)
                 result=cur.fetchone()
-                print(result[0])
         except Exception as e:  
                 raise e
 		
@@ -113,8 +112,6 @@ def initCharacters(positionPlayer, positionOpponent):
         listePersoAvailable = listePerso[:]
 
         aleatoire=choice(listePersoAvailable)
-        print(listePersoAvailable)
-        print(aleatoire)
 
         c1 = getCaracterFromDb(aleatoire)
         C1 = pygame.image.load(c1.getUrl()).convert()
@@ -292,6 +289,9 @@ def displayInfoStats(fenetre,player,opponent):
                 fenetre.blit(item[0],item[1])
 
                 #display info stats
+                current_name=pygame.font.SysFont('Arial',23)
+                fenetre.blit(current_name.render(str(item[2].getName()),True, (255,255,255)),(650,3+(i*90)))
+                
                 current_hp=pygame.font.SysFont('Arial',23)
                 fenetre.blit(current_hp.render(str(item[2].getHp()),True, (255,255,255)),(720,33+(i*90)))
                 
@@ -313,6 +313,9 @@ def displayInfoStats(fenetre,player,opponent):
                 fenetre.blit(item[0],item[1])
 
                 #display info stats
+                current_name=pygame.font.SysFont('Arial',23)
+                fenetre.blit(current_name.render(str(item[2].getName()),True, (255,255,255)),(650,3+(i*90)))
+                
                 current_hp=pygame.font.SysFont('Arial',23)
                 fenetre.blit(current_hp.render(str(item[2].getHp()),True, (255,255,255)),(720,33+(i*90)))
                 
@@ -333,37 +336,38 @@ def displayInfoStats(fenetre,player,opponent):
 
 def getEnemieToAttack(opponent,me):
         charToAttack=[]
-        print(me[1].top,me[1].left)
+        #print(me[1].top,me[1].left)
         for character in opponent:
-                print(character[1].top,character[1].left)
-                if me[2].getPorte()==1:
-                        # tous les cas ou un adversaire est a une case de moi
-                        if character[1].top+90 == me[1].top and character[1].left == me[1].left:
-                                charToAttack.append(character)
-                        if character[1].top-90 == me[1].top and character[1].left == me[1].left:
-                                charToAttack.append(character)
-                        if character[1].top == me[1].top and character[1].left+90 == me[1].left:
-                                charToAttack.append(character)
-                        if character[1].top == me[1].top and character[1].left-90 == me[1].left:
-                                charToAttack.append(character)
-                else:
-                        # tous les cas ou un adversaire est a deux cases de moi
-                        if character[1].top+180 == me[1].top and character[1].left == me[1].left:
-                                charToAttack.append(character)
-                        if character[1].top-180 == me[1].top and character[1].left == me[1].left:
-                                charToAttack.append(character)
-                        if character[1].top == me[1].top and character[1].left+180 == me[1].left:
-                                charToAttack.append(character)
-                        if character[1].top == me[1].top and character[1].left-180 == me[1].left:
-                                charToAttack.append(character)
-                        if character[1].top+90 == me[1].top and character[1].left+90 == me[1].left:
-                                charToAttack.append(character)
-                        if character[1].top-90 == me[1].top and character[1].left-90 == me[1].left:
-                                charToAttack.append(character)
-                        if character[1].top+90 == me[1].top and character[1].left-90 == me[1].left:
-                                charToAttack.append(character)
-                        if character[1].top-90 == me[1].top and character[1].left+90 == me[1].left:
-                                charToAttack.append(character)
+                if character[2].getHp()!=0:
+                        #print(character[1].top,character[1].left)
+                        if me[2].getPorte()==1:
+                                # tous les cas ou un adversaire est a une case de moi
+                                if character[1].top+90 == me[1].top and character[1].left == me[1].left:
+                                        charToAttack.append(character)
+                                if character[1].top-90 == me[1].top and character[1].left == me[1].left:
+                                        charToAttack.append(character)
+                                if character[1].top == me[1].top and character[1].left+90 == me[1].left:
+                                        charToAttack.append(character)
+                                if character[1].top == me[1].top and character[1].left-90 == me[1].left:
+                                        charToAttack.append(character)
+                        else:
+                                # tous les cas ou un adversaire est a deux cases de moi
+                                if character[1].top+180 == me[1].top and character[1].left == me[1].left:
+                                        charToAttack.append(character)
+                                if character[1].top-180 == me[1].top and character[1].left == me[1].left:
+                                        charToAttack.append(character)
+                                if character[1].top == me[1].top and character[1].left+180 == me[1].left:
+                                        charToAttack.append(character)
+                                if character[1].top == me[1].top and character[1].left-180 == me[1].left:
+                                        charToAttack.append(character)
+                                if character[1].top+90 == me[1].top and character[1].left+90 == me[1].left:
+                                        charToAttack.append(character)
+                                if character[1].top-90 == me[1].top and character[1].left-90 == me[1].left:
+                                        charToAttack.append(character)
+                                if character[1].top+90 == me[1].top and character[1].left-90 == me[1].left:
+                                        charToAttack.append(character)
+                                if character[1].top-90 == me[1].top and character[1].left+90 == me[1].left:
+                                        charToAttack.append(character)
         return charToAttack
         
 #ne prend pas en compte les faiblesses/resistances pour le moment
@@ -379,15 +383,20 @@ def attack(opponent,me):
         if himDamage < 0:
                 himDamage=0
         opponent[2].hp-= meDamage
+        print(me[2].getName()," inflige ",meDamage," dégat à ",opponent[2].getName())
         if opponent[2].getHp() >0:
                 me[2].hp-= himDamage
+                print(opponent[2].getName()," inflige ",himDamage," dégat à ",me[2].getName())
                 if me[2].getVit() >= opponent[2].getVit()+5:        #my speed >= opponent speed + 5
                         if me[2].getHp() >0:
                                 opponent[2].hp-= meDamage
+                                print(me[2].getName()," inflige ",meDamage," dégat à ",opponent[2].getName())
         if opponent[2].getHp() < 0:
                 opponent[2].hp=0
+                print(opponent[2].getName()," est hors combat.")
         if me[2].getHp() < 0:
                 me[2].hp=0
+                print(me[2].getName()," est hors combat.")
         return (opponent,me)
 
 def getCharName(listChara,name):

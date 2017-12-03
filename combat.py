@@ -97,26 +97,26 @@ while continuer :
                     if event.key == K_TAB :
                         turnPlayer[ChoixPerso][1]=copy(characterPosBeforeTurn)
                         mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
-                        characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
-                        pygame.display.flip()
                         if ChoixPerso < len(turnPlayer)-1 :
                             ChoixPerso+=1
                         else:
                             ChoixPerso=0
                         if len(turnPlayer)!=0: 
                                 mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
+                        characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
+                        pygame.display.flip()
                     if eventOccur:
-                        print(turnPlayer[ChoixPerso][2].getName()," ",turnPlayer[ChoixPerso][2].getTypeMove()," ",int((turnPlayer[ChoixPerso][1].top)/90),int((turnPlayer[ChoixPerso][1].left)/90))
+                        #print(turnPlayer[ChoixPerso][2].getName()," ",turnPlayer[ChoixPerso][2].getTypeMove()," ",int((turnPlayer[ChoixPerso][1].top)/90),int((turnPlayer[ChoixPerso][1].left)/90))
                         pygame.display.flip()
                         if mouvement==0:
-                            print("Voulez vous confirmer le déplacement? y/n")
+                            print("Voulez vous confirmer le déplacement de ",turnPlayer[ChoixPerso][2].getName(),"? y/n")
                     if event.key == K_y :
                         if turn==0:
                             cible=getEnemieToAttack(opponent,turnPlayer[ChoixPerso])
                         else:
                             cible=getEnemieToAttack(player,turnPlayer[ChoixPerso])
                         if not cible:
-                            print("Pas de cible a proximité")
+                            print("Pas de cible a proximité, fin de tour pour ",turnPlayer[ChoixPerso][2].getName())
                         else:
                             print("Un ou plusieurs enemies sont a porté d'attaque. Entrez le numero correspondant afin d'attaquer le personnage ciblé:")
                             i=1
@@ -132,14 +132,10 @@ while continuer :
                                         if event2.type == KEYUP :
                                             if event2.key == keyname :
                                                 if turn ==0:
-                                                    print(getCharName(opponent,cible[i][2].getName()))
-                                                    print(attack(cible[i],turnPlayer[ChoixPerso]))
                                                     opponent[getCharName(opponent,cible[i][2].getName())],turnPlayer[ChoixPerso]=attack(cible[i],turnPlayer[ChoixPerso])
                                                     player[getCharName(player,turnPlayer[ChoixPerso][2].getName())][2].hp=turnPlayer[ChoixPerso][2].getHp()
                                                     answer=False
                                                 else:
-                                                    print(getCharName(player,cible[i][2].getName()))
-                                                    print(attack(cible[i],turnPlayer[ChoixPerso]))
                                                     player[getCharName(player,cible[i][2].getName())],turnPlayer[ChoixPerso]=attack(cible[i],turnPlayer[ChoixPerso])
                                                     opponent[getCharName(opponent,turnPlayer[ChoixPerso][2].getName())][2].hp=turnPlayer[ChoixPerso][2].getHp()
                                                     answer=False
@@ -167,7 +163,7 @@ while continuer :
                         else:
                             cible=getEnemieToAttack(player,turnPlayer[ChoixPerso])
                         if not cible:
-                            print("Pas de cible a proximité")
+                            print("Pas de cible a proximité, fin de tour pour ",turnPlayer[ChoixPerso][2].getName())
                         else:
                             print("Un ou plusieurs enemies sont a porté d'attaque. Entrez le numero correspondant afin d'attaquer le personnage ciblé:")
                             i=1
@@ -183,14 +179,10 @@ while continuer :
                                         if event2.type == KEYUP :
                                             if event2.key == keyname :
                                                 if turn ==0:
-                                                    print(getCharName(opponent,cible[i][2].getName()))
-                                                    print(attack(cible[i],turnPlayer[ChoixPerso]))
                                                     opponent[getCharName(opponent,cible[i][2].getName())],turnPlayer[ChoixPerso]=attack(cible[i],turnPlayer[ChoixPerso])
                                                     player[getCharName(player,turnPlayer[ChoixPerso][2].getName())][2].hp=turnPlayer[ChoixPerso][2].getHp()
                                                     answer=False
                                                 else:
-                                                    print(getCharName(player,cible[i][2].getName()))
-                                                    print(attack(cible[i],turnPlayer[ChoixPerso]))
                                                     player[getCharName(player,cible[i][2].getName())],turnPlayer[ChoixPerso]=attack(cible[i],turnPlayer[ChoixPerso])
                                                     opponent[getCharName(opponent,turnPlayer[ChoixPerso][2].getName())][2].hp=turnPlayer[ChoixPerso][2].getHp()
                                                     answer=False
@@ -211,11 +203,32 @@ while continuer :
                         pygame.display.flip()
     if turn==0 :
         turn=1
-        turnPlayer = opponent[:]
-        mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
-        characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
+        turnPlayer = []
+        for item in opponent:
+            if item[2].getHp()!=0:
+                turnPlayer.append(item)
+        if turnPlayer:
+            mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
+            characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
+        else:
+            continuer=False
     else :
         turn=0
-        turnPlayer = player[:]
-        mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
-        characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
+        for item in player:
+            if item[2].getHp()!=0:
+                turnPlayer.append(item)
+        if turnPlayer:
+            mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
+            characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
+        else:
+            continuer=False
+
+fenetre=displayInfoBackground(fenetre,player,opponent)
+fenetre=displayInfoStats(fenetre,player,opponent)
+fenetre=displayFight(fenetre,fond,player,opponent)
+pygame.display.flip()
+
+if turn==0:
+    print("Joueur 1 est vainqueur")
+else:
+    print("Joueur 2 est vainqueur")
