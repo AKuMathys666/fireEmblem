@@ -45,10 +45,10 @@ INSERT INTO `personnage` (`id`, `nom`, `type_deplacement`, `hp`, `atk`, `vit`, `
 	(7, 'Athena', 'Infanterie', 36, 44, 38, 27, 24, 1, 'Physique', 'Rouge', 'img\\Characters\\Athena\\BtlFace - Copie.png'),
 	(8, 'Azura', 'Infanterie', 36, 43, 33, 21, 28, 1, 'Physique', 'Bleu', 'img\\Characters\\Azura\\BtlFace - Copie.png'),
 	(9, 'Azura - Performing', 'Infanterie', 35, 48, 34, 20, 28, 1, 'Physique', 'Vert', 'img\\Characters\\Azura - Dancer\\BtlFace - Copie.png'),
-	(10, 'Azama', 'Infanterie', 43, 31, 26, 32, 25, 2, 'Magique', 'Gris', 'img\\characters\\Azama\\BtlFace - Copie.png'),
+	(10, 'Azama', 'Infanterie', 43, 31, 26, 32, 25, 2, 'Magique', 'Gris', 'img\\Characters\\Azama\\BtlFace - Copie.png'),
 	(11, 'Barst', 'Infanterie', 46, 41, 27, 30, 17, 1, 'Physique', 'Vert', 'img\\Characters\\Barst\\BtlFace - Copie.png'),
 	(12, 'Bartre', 'Infanterie', 49, 48, 25, 33, 13, 1, 'Physique', 'Vert', 'img\\Characters\\Bartre\\BtlFace - Copie.png'),
-	(13, 'Berkut', 'Cavalier', 43, 48, 22, 31, 24, 1, 'Physique', 'Bleu', 'img\\Charaters\\Berkut\\BtlFace - Copie.png'),
+	(13, 'Berkut', 'Cavalier', 43, 48, 22, 31, 24, 1, 'Physique', 'Bleu', 'img\\Characters\\Berkut\\BtlFace - Copie.png'),
 	(14, 'Beruka', 'Flier', 46, 40, 23, 37, 22, 1, 'Physique', 'Vert', 'img\\Characters\\Beruka\\BtlFace - Copie.png'),
 	(15, 'Black Knight', 'Tank', 48, 50, 34, 35, 18, 1, 'Physique', 'Rouge', 'img\\Characters\\Black Knight\\BtlFace - Copie.png'),
 	(16, 'Boey', 'Infanterie', 43, 39, 27, 32, 18, 2, 'Magique', 'Vert', 'img\\Characters\\Boey\\BtlFace - Copie.png'),
@@ -82,8 +82,8 @@ INSERT INTO `personnage` (`id`, `nom`, `type_deplacement`, `hp`, `atk`, `vit`, `
 	(44, 'Elincia', 'Flier', 35, 45, 36, 24, 27, 1, 'Physique', 'Rouge', 'img\\Characters\\Elincia\\BtlFace - Copie.png'),
 	(45, 'Elise', 'Cavalier', 30, 42, 32, 19, 32, 2, 'Magique', 'Gris', 'img\\Characters\\Elise\\BtlFace - Copie.png'),
 	(46, 'Elise - Summer', 'Infanterie', 34, 51, 34, 18, 25, 2, 'Magique', 'Vert', 'img\\Characters\\Elise - Summer\\BtlFace - Copie.png'),
-	(47, 'Eliwood', 'Cavalier', 39, 47, 30, 23, 32, 1, 'Physique', 'Rouge', 'img\\CHharcters\\Eliwood\\BtlFace - Copie.png'),
-	(48, 'Ephraim', 'Infanterie', 45, 47, 25, 32, 20, 1, 'Physique', 'Bleu', 'img\\Chracters\\Ephraim\\BtlFace - Copie.png'),
+	(47, 'Eliwood', 'Cavalier', 39, 47, 30, 23, 32, 1, 'Physique', 'Rouge', 'img\\Characters\\Eliwood\\BtlFace - Copie.png'),
+	(48, 'Ephraim', 'Infanterie', 45, 47, 25, 32, 20, 1, 'Physique', 'Bleu', 'img\\Characters\\Ephraim\\BtlFace - Copie.png'),
 	(49, 'Est', 'Flier', 36, 47, 30, 24, 32, 1, 'Physique', 'Bleu', 'img\\Characters\\Est\\BtlFace - Copie.png');
 /*!40000 ALTER TABLE `personnage` ENABLE KEYS */;
 
