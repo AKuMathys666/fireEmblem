@@ -36,14 +36,14 @@ CREATE TABLE IF NOT EXISTS `personnage` (
 -- Export de données de la table fire_emblem_db.personnage : ~8 rows (environ)
 /*!40000 ALTER TABLE `personnage` DISABLE KEYS */;
 INSERT INTO `personnage` (`id`, `nom`, `type_deplacement`, `hp`, `atk`, `vit`, `def`, `res`, `portee`, `type_attaque`, `couleur`, `image`) VALUES
-	(1, 'Abel', 'Cavalier', 39, 33, 32, 25, 25, 1, 'Physique', 'Bleu', 'img\\Characters\\Abel\\BtlFace - Copie.png'),
-	(2, 'Alfonse', 'Infanterie', 43, 35, 25, 32, 22, 1, 'Physique', 'Rouge', 'img\\Characters\\Alfonse\\BtlFace - Copie.png'),
-	(3, 'Alm', 'Infanterie', 45, 33, 30, 28, 22, 1, 'Physique', 'Rouge', 'img\\Characters\\Alm\\BtlFace - Copie.png'),
-	(4, 'Amelia', 'Tank', 47, 34, 34, 35, 23, 1, 'Physique', 'Vert', 'img\\Characters\\Amelia\\BtlFace - Copie.png'),
-	(5, 'Anna', 'Infanterie', 41, 29, 38, 22, 28, 1, 'Physique', 'Vert', 'img\\Characters\\Anna\\BtlFace - Copie.png'),
-	(6, 'Arthur', 'Infanterie', 43, 32, 29, 30, 24, 1, 'Physique', 'Vert', 'img\\Characters\\Arthur\\BtlFace - Copie.png'),
-	(7, 'Athena', 'Infanterie', 36, 31, 38, 27, 24, 1, 'Physique', 'Rouge', 'img\\Characters\\Athena\\BtlFace - Copie.png'),
-	(8, 'Azura', 'Infanterie', 36, 31, 33, 21, 28, 1, 'Physique', 'Bleu', 'img\\Characters\\Azura\\BtlFace - Copie.png');
+	(1, 'Abel', 'Cavalier', 39, 41, 32, 25, 25, 1, 'Physique', 'Bleu', 'img\\Characters\\Abel\\BtlFace - Copie.png'),
+	(2, 'Alfonse', 'Infanterie', 43, 51, 25, 32, 22, 1, 'Physique', 'Rouge', 'img\\Characters\\Alfonse\\BtlFace - Copie.png'),
+	(3, 'Alm', 'Infanterie', 45, 49, 30, 28, 22, 1, 'Physique', 'Rouge', 'img\\Characters\\Alm\\BtlFace - Copie.png'),
+	(4, 'Amelia', 'Tank', 47, 48, 34, 35, 23, 1, 'Physique', 'Vert', 'img\\Characters\\Amelia\\BtlFace - Copie.png'),
+	(5, 'Anna', 'Infanterie', 41, 45, 38, 22, 28, 1, 'Physique', 'Vert', 'img\\Characters\\Anna\\BtlFace - Copie.png'),
+	(6, 'Arthur', 'Infanterie', 43, 44, 29, 30, 24, 1, 'Physique', 'Vert', 'img\\Characters\\Arthur\\BtlFace - Copie.png'),
+	(7, 'Athena', 'Infanterie', 36, 44, 38, 27, 24, 1, 'Physique', 'Rouge', 'img\\Characters\\Athena\\BtlFace - Copie.png'),
+	(8, 'Azura', 'Infanterie', 36, 46, 33, 21, 28, 1, 'Physique', 'Bleu', 'img\\Characters\\Azura\\BtlFace - Copie.png');
 /*!40000 ALTER TABLE `personnage` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
