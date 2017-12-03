@@ -390,11 +390,12 @@ def attack(opponent,me):
                 opponent[2].hp-= meDamage
                 print(me[2].getName()," inflige à nouveau ",meDamage," dégat à ",opponent[2].getName(),"(Brave weapon)")
         if opponent[2].getHp() >0:
-                me[2].hp-= himDamage
-                print(opponent[2].getName()," inflige ",himDamage," dégat à ",me[2].getName())
-                if isBrave(opponent):
+                if opponent[2].getPorte()==me[2].getPorte():
                         me[2].hp-= himDamage
-                        print(opponent[2].getName()," inflige à nouveau ",himDamage," dégat à ",me[2].getName(),"(Brave weapon)")
+                        print(opponent[2].getName()," inflige ",himDamage," dégat à ",me[2].getName())
+                        if isBrave(opponent):
+                                me[2].hp-= himDamage
+                                print(opponent[2].getName()," inflige à nouveau ",himDamage," dégat à ",me[2].getName(),"(Brave weapon)")
                 
                 if me[2].getVit() >= opponent[2].getVit()+5:        #my speed >= opponent speed + 5
                         if me[2].getHp() >0:

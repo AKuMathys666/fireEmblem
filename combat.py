@@ -18,10 +18,40 @@ t_map=deplacement(aleatoire)
 for map in t_map:
     print(map)
 
+print("PRESENTATION DU JEU:")
+print("------------------------------------------------------")
+print("Ce jeu se compose d'une partie en versus avec 2 joueurs.")
+print("Chaque joueur possède 4 personnages tirés aléatoirement sans doublons.")
+print("L'objectif est de vaincre les 4 personnages adverses.")
+print("Le jeu se déroule en tour par tour, vous jouez avec vos 4 personnages puis l'adversaire joue avec ses 4 personnages.")
+print("Triangle advantage: des bonus malus de 20 % sont accordés selon la couleurs des personnages qui s'attaquent:")
+print("Bleu > Rouge, Rouge > Vert, Vert > Bleu, le Gris étant l'element neutre")
+print("Lorsque vous attaquer un adversaire si vous avez au moins 5 de vitesse de plus que lui, vous l'attaquez 2 fois")
+print("Lorsque vous attaquez un adversaire, il ripostera s'il en est capable.")
+print("De plus, certains personnages possèdes des armes spéciales dites 'brave weapons' leurs permettant d'attaquer 2 fois")
+print("Selon le type de déplacement de vos personnages vous pourez vous déplacer plus ou moins librement d'une a trois cases.")
+print("Le terrain est donc a prendre en compte (il est lui même choisit aléatoirement)")
+print("Le type d'attaque,également dépendant du personnage est a considérer, magique ou physique il se heurtera respectivement aux resistances ou défenses adverse")
+print("Pour se déplacer utilisez les fleches directionnelles.")
+print("Pour confirner un deplacement entrez 'y' pour l'annuler et retourner a votre position de début de tour faites 'n'.")
+print("Puisque vous pouvez jouer sur n'importe lequelle de vos personnages dans l'ordre que vous souhaitez, entrez la touche de tabulation afin de passer au personnages suivant.")
+print("Attention, faire tabulation ne consome pas le tour du personnage!")
+print("Si des enemie sont a porté d'attaque une fois votre deplacement effectué, il vous sera proposé de confirmer lequel vous voulez attaquer.")
+print("Bonne chance!")
+print("------------------------------------------------------")
+print("Personnages du joueur 1 :")
+
 positionPlayer=getArrayPos(t_map,6)
 positionOpponent=getArrayPos(t_map,7)
 player,opponent=initCharacters(positionPlayer,positionOpponent)
 
+for chara in player:
+    print(chara[2].display())
+
+print("------------------------------------------------------")
+print("Personnages du joueur 2 :")
+for chara in opponent:
+    print(chara[2].display())
 fenetre=displayInfoBackground(fenetre,player,opponent)
 fenetre=displayInfoStats(fenetre,player,opponent)
     
@@ -33,6 +63,13 @@ turn = 0 # 0 = player, 1 = opponent
 turnPlayer = player[:]
 mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
 characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
+
+numTour=1
+
+print("------------------------------------------------------")
+print("--------------------- TOUR",numTour,"-------------------------")
+print("-------------------- Joueur 1 ------------------------")
+print("Tour de ",turnPlayer[ChoixPerso][2].getName())
 
 #Boucle infinie
 while continuer :
@@ -103,6 +140,7 @@ while continuer :
                             ChoixPerso=0
                         if len(turnPlayer)!=0: 
                                 mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
+                                print("Tour de ",turnPlayer[ChoixPerso][2].getName())
                         characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
                         pygame.display.flip()
                     if eventOccur:
@@ -150,6 +188,7 @@ while continuer :
                         if len(turnPlayer)!=0:
                             mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
                             characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
+                            print("Tour de ",turnPlayer[ChoixPerso][2].getName())
                     if event.key == K_n:
                         turnPlayer[ChoixPerso][1]=copy(characterPosBeforeTurn)
                         mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
@@ -197,11 +236,16 @@ while continuer :
                         if len(turnPlayer)!=0:
                             mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
                             characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
+                            print("Tour de ",turnPlayer[ChoixPerso][2].getName())
                     if event.key == K_n:
                         turnPlayer[ChoixPerso][1]=copy(characterPosBeforeTurn)
                         mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
                         pygame.display.flip()
     if turn==0 :
+        print("--------------------- TOUR",numTour,"-------------------------")
+        print("-------------------- Joueur 2 ------------------------")
+        numTour+=1
+        
         turn=1
         turnPlayer = []
         for item in opponent:
@@ -212,7 +256,12 @@ while continuer :
             characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
         else:
             continuer=False
+        print("Tour de ",turnPlayer[ChoixPerso][2].getName())
     else :
+        print("--------------------- TOUR",numTour,"-------------------------")
+        print("-------------------- Joueur 1 ------------------------")
+        numTour+=1
+        
         turn=0
         for item in player:
             if item[2].getHp()!=0:
@@ -222,6 +271,7 @@ while continuer :
             characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
         else:
             continuer=False
+        print("Tour de ",turnPlayer[ChoixPerso][2].getName())
 
 fenetre=displayInfoBackground(fenetre,player,opponent)
 fenetre=displayInfoStats(fenetre,player,opponent)
