@@ -40,11 +40,13 @@ def samePos(x,y,player,opponent):
         for item in player :
                 if item[1].top/90== x:
                         if item[1].left/90== y:
-                                valReturn = False #Joueur sur la case ciblé
+                                if item[2].getHp()!=0:
+                                        valReturn = False #Joueur sur la case ciblé
         for item in opponent :
                 if item[1].top/90== x:
                         if item[1].left/90== y:
-                                valReturn = False # Enemie sur la case ciblé
+                                if item[2].getHp()!=0:
+                                        valReturn = False # Enemie sur la case ciblé
         return valReturn
         
 def deplacementValide(x,y,map,player,opponent,type_deplacement):
@@ -212,9 +214,11 @@ def initCharacters(positionPlayer, positionOpponent):
 def displayFight(fenetre,fond,player,opponent):
         fenetre.blit(fond,(0,0))
         for item in player :
-                fenetre.blit(item[0],item[1])
+                if item[2].getHp()!=0:
+                        fenetre.blit(item[0],item[1])
         for item in opponent :
-                fenetre.blit(item[0],item[1])
+                if item[2].getHp()!=0:
+                        fenetre.blit(item[0],item[1])
         return fenetre
         
 def displayInfoBackground(fenetre,player,opponent):
@@ -329,7 +333,9 @@ def displayInfoStats(fenetre,player,opponent):
 
 def getEnemieToAttack(opponent,me):
         charToAttack=[]
+        print(me[1].top,me[1].left)
         for character in opponent:
+                print(character[1].top,character[1].left)
                 if me[2].getPorte()==1:
                         # tous les cas ou un adversaire est a une case de moi
                         if character[1].top+90 == me[1].top and character[1].left == me[1].left:
@@ -363,16 +369,30 @@ def getEnemieToAttack(opponent,me):
 #ne prend pas en compte les faiblesses/resistances pour le moment
 def attack(opponent,me):
         if me[2].getTypeAtk()==0:                # attaque magique
-                meDamage=me[2].getAtk()-oponnent[2].getRes()
-                himDamage=oponnent[2].getAtk()-me[2].getRes()
+                meDamage=me[2].getAtk()-opponent[2].getRes()
+                himDamage=opponent[2].getAtk()-me[2].getRes()
         else:                                # attaque physique
-                meDamage=me[2].getAtk()-oponnent[2].getDef()
-                himDamage=oponnent[2].getAtk()-me[2].getDef()
+                meDamage=me[2].getAtk()-opponent[2].getDef()
+                himDamage=opponent[2].getAtk()-me[2].getDef()
+        if meDamage < 0:
+                meDamage=0
+        if himDamage < 0:
+                himDamage=0
         opponent[2].hp-= meDamage
         if opponent[2].getHp() >0:
                 me[2].hp-= himDamage
                 if me[2].getVit() >= opponent[2].getVit()+5:        #my speed >= opponent speed + 5
                         if me[2].getHp() >0:
                                 opponent[2].hp-= meDamage
+        if opponent[2].getHp() < 0:
+                opponent[2].hp=0
+        if me[2].getHp() < 0:
+                me[2].hp=0
         return (opponent,me)
-                
+
+def getCharName(listChara,name):
+        i=0
+        for pers in listChara:
+                if pers[2].getName()==name:
+                        return i
+                i+=1
