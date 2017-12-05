@@ -5,6 +5,7 @@ pygame.init()
 from map import *
 from function import *
 from copy import *
+from alphaBeta import *
 
 #crée une fenêtre 540*720 qui affiche l'image choisis
 fenetre = pygame.display.set_mode((900,720),RESIZABLE)
@@ -60,6 +61,10 @@ ChoixPerso = 0
 continuer=True
 turn = 0 # 0 = player, 1 = opponent
 
+
+turn=1
+makeTree(player,opponent,turn)
+
 turnPlayer = player[:]
 mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
 characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
@@ -77,6 +82,9 @@ while continuer :
     while len(turnPlayer)!=0 :
         fenetre=displayFight(fenetre,fond,player,opponent)
         pygame.display.flip()
+        #if turn == 1: #tour de l'IA
+            #player,opponent = alphaBeta(player,opponent)
+        #else:
         for event in pygame.event.get():
             if mouvement != 0:
                 if event.type == QUIT :
