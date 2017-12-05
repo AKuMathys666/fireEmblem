@@ -62,8 +62,8 @@ continuer=True
 turn = 0 # 0 = player, 1 = opponent
 
 
-turn=1
-makeTree(player,opponent,turn)
+#turn=1
+#makeTree(player,opponent,turn)
 
 turnPlayer = player[:]
 mouvement=copy(turnPlayer[ChoixPerso][2].getMove())

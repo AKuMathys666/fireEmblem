@@ -29,7 +29,7 @@ def getSumHp(listeCharacter):
     return sumHP
 
 def makeTree(player,opponent,turn=1):
-    feuille =(player,opponent,turn)
+    feuille =(player[:],opponent[:])
     tree=[]
     if turn ==1:
         tree = children(feuille)
@@ -44,18 +44,17 @@ def alive(listCharacter):
     for item in listCharacter:
         if item[2].getHp()!=0:
             alive.append(item)
-            nbAlive+=1
-    return nbAlive,alive
+    return alive
 
-def children(feuille):
-    player=feuille[0][:]
-    opponent=feuille[1][:]
+
 
 
     
 #def getPermutation(playerAlive,countPlayerAlive):
 #    permutation=[]
 #    if countPlayerAlive ==4 :
+
+# if 4 alive
 #1234
 #1243
 #1324
@@ -81,5 +80,24 @@ def children(feuille):
 #4312
 #4321
 # !4 alternatives
+
+# if 3 alive
+#123
+#132
+#213
+#231
+#312
+#321
+# !3 alternatives
+
+# if 2 alive
+#12
+#21
+# !2 alternatives
+
+
+# if 1 alive
+#1
+# 1 alternatives
 #feuille => mvt perso 1 => atk perso 1 => mvt perso 2 => atk perso 2 => mvt perso 3 => atk perso 3 => mvt perso 4 => atk perso 4
 

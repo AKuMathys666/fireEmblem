@@ -60,7 +60,7 @@ def deplacementValide(x,y,map,player,opponent,type_deplacement):
         elif type_deplacement=="Flier":
                 if map[x][y] in (0,2,3,6,7):
                         return samePos(x,y,player,opponent)
-        else:#Tank
+        else:              #Tank
                 if map[x][y] in (0,3,6,7):
                         return samePos(x,y,player,opponent)
         return False
