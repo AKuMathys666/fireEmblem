@@ -31,28 +31,67 @@ def getSumHp(listeCharacter):
 
 def makeRandomLeaf(player,opponent,myMap):
     feuille =(player[:],opponent[:])
-    playerToMove = list(range(len(opposant)))
+    
+    #Opponent turn
+    playerToMove = list(range(len(opponent)))
+    print(playerToMove)
     listAction=[]
     while playerToMove :
         selectedPlayer = choice(playerToMove)
         listAction.append(selectedPlayer)
-        
-        listMovePosible=movePossible(feuille,selectedPlayer,myMap)
-        selectedMove = choice(list(range(len(listMovePosible))))
-        feuille[1][selectedPlayer][1]=listMovePosible[selectedMove] #make move
+        print(feuille[1][selectedPlayer])
+        listMovePosible=movePossible(feuille,feuille[1][selectedPlayer],myMap)
+        selectedMove = choice(range(len(listMovePosible)))
+        feuille[1][selectedPlayer]=listMovePosible[selectedMove] #make move
 
         cible=getEnemieToAttack(feuille[0],feuille[1][selectedPlayer])
-        selectAtk = choice(list(range(len(cible)+1)))
-        feuille[0][getCharName(feuille[0],cible[selectAtk][2].getName())],feuille[1][selectedPlayer]=attack(cible[selectAtk],feuille[1][selectedPlayer])
-                                                    
-        attak()#make an attak
+        print(len(cible))
+        if len(cible)!=0:
+            selectAtk = choice(range(len(cible)))
+            print(selectAtk)
+        else:
+            selectAtk=-1
+        #make an attak
+        if selectAtk!=-1:
+            print("make atk")
+            feuille[0][getCharName(feuille[0],cible[selectAtk][2].getName())],feuille[1][selectedPlayer]=attack(cible[selectAtk],feuille[1][selectedPlayer])
+        playerToMove.remove(selectedPlayer)
+    return feuille[0],feuille[1]
+    #Player turn
+    playerToMove = list(range(len(player)))
+    print(playerToMove)
+    listAction=[]
+    while playerToMove :
+        selectedPlayer = choice(playerToMove)
+        listAction.append(selectedPlayer)
+        print(feuille[0][selectedPlayer])
+        listMovePosible=movePossible(feuille,feuille[0][selectedPlayer],myMap)
+        selectedMove = choice(range(len(listMovePosible)))
+        feuille[0][selectedPlayer]=listMovePosible[selectedMove] #make move
 
+        cible=getEnemieToAttack(feuille[0],feuille[0][selectedPlayer])
+        if len(cible)!=0:
+            selectAtk = choice(range(len(cible)))
+        else:
+            selectAtk=0
+        #make an attak
+        if selectAtk!=0:
+            feuille[1][getCharName(feuille[1],cible[selectAtk][2].getName())],feuille[0][selectedPlayer]=attack(cible[selectAtk],feuille[0][selectedPlayer])
+        playerToMove.remove(selectedPlayer)
+    return feuille[0],feuille[1]
         
         
 
 #prendre cordonné du joueur, prendre les case autour valide, appliquer a nouveau movepossible tant que mouvement!=0
 #recuper la liste des coordonné, factoriser les doublon et retourner cette liste
 def movePossible(feuille,selectedPlayer,myMap):
+    if selectedPlayer in feuille[0]:
+        me=0
+        you=1
+    else:
+        me=1
+        you=0
+    mouvementDepart=copy(selectedPlayer[2].getMove())
     playerListAtPos=[]
     playerListAtPos.append(selectedPlayer)
     listPos=[]
@@ -66,7 +105,7 @@ def movePossible(feuille,selectedPlayer,myMap):
             character.append(deepcopy(characters[1]))
             character.append(deepcopy(characters[2]))
             if character[1].top+90 < 720 :
-                if deplacementValide(int((character[1].top+90)/90),int((character[1].left)/90),myMap,feuille[0],feuille[1],character[2].getTypeMove()):
+                if deplacementValide(int((character[1].top+90)/90),int((character[1].left)/90),myMap,feuille[me],feuille[you],character[2].getTypeMove()):
                     if myMap[int((character[1].top+90)/90)][int((character[1].left)/90)]==3 and character[2].getTypeMove()=="Infanterie":
                         if mouvement-2 >=0:
                             character[1] = character[1].move(0,90)
@@ -85,7 +124,7 @@ def movePossible(feuille,selectedPlayer,myMap):
             character.append(deepcopy(characters[1]))
             character.append(deepcopy(characters[2]))
             if character[1].top-90 >= 0 :
-                if deplacementValide(int((character[1].top-90)/90),int((character[1].left)/90),myMap,feuille[0],feuille[1],character[2].getTypeMove()):
+                if deplacementValide(int((character[1].top-90)/90),int((character[1].left)/90),myMap,feuille[me],feuille[you],character[2].getTypeMove()):
                     if myMap[int((character[1].top-90)/90)][int((character[1].left)/90)]==3 and character[2].getTypeMove()=="Infanterie":
                         if mouvement-2 >=0:
                             character[1] = character[1].move(0,-90)
@@ -105,7 +144,7 @@ def movePossible(feuille,selectedPlayer,myMap):
             character.append(deepcopy(characters[1]))
             character.append(deepcopy(characters[2]))
             if character[1].left+90 < 540 :
-                if deplacementValide(int((character[1].top)/90),int((character[1].left+90)/90),myMap,feuille[0],feuille[1],character[2].getTypeMove()):
+                if deplacementValide(int((character[1].top)/90),int((character[1].left+90)/90),myMap,feuille[me],feuille[you],character[2].getTypeMove()):
                     if myMap[int((character[1].top)/90)][int((character[1].left+90)/90)]==3 and character[2].getTypeMove()=="Infanterie":
                         if mouvement-2 >=0:
                             character[1] = character[1].move(90,0)
@@ -125,7 +164,7 @@ def movePossible(feuille,selectedPlayer,myMap):
             character.append(deepcopy(characters[1]))
             character.append(deepcopy(characters[2]))
             if character[1].left-90 >= 0 :
-                if deplacementValide(int((character[1].top)/90),int((character[1].left-90)/90),myMap,feuille[0],feuille[1],character[2].getTypeMove()):
+                if deplacementValide(int((character[1].top)/90),int((character[1].left-90)/90),myMap,feuille[me],feuille[you],character[2].getTypeMove()):
                     if myMap[int((character[1].top)/90)][int((character[1].left-90)/90)]==3 and character[2].getTypeMove()=="Infanterie":
                         if mouvement-2 >=0:
                             character[1] = character[1].move(-90,0)
@@ -139,11 +178,12 @@ def movePossible(feuille,selectedPlayer,myMap):
                         if character[1] not in listPos:
                             listPos.append(character[1])
                             playerListAtPos.append(character)
-    for item in listPos:
-        print(int((item.top+90)/90)," ",int((item.left)/90))
+    #for item in listPos:
+        #print(int((item.top+90)/90)," ",int((item.left)/90))
     for item in playerListAtPos:
-        print(item[2].getMove())
-    return listPos
+        item[2].moves=mouvementDepart
+        #print(item[2].getMove())
+    return playerListAtPos
 
     
 #feuille => mvt perso 1 => atk perso 1 => mvt perso 2 => atk perso 2 => mvt perso 3 => atk perso 3 => mvt perso 4 => atk perso 4
