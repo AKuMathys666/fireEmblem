@@ -90,7 +90,7 @@ while continuer :
         pygame.display.flip()
         if turn == 1: #tour de l'IA
             #player,opponent = alphaBeta(player,opponent)
-            player,opponent = makeRandomLeaf(player,opponent,t_map)
+            player,opponent = makeRandomIALeaf(player,opponent,t_map)
             fenetre=displayInfoBackground(fenetre,player,opponent)
             fenetre=displayInfoStats(fenetre,player,opponent)
             turnPlayer=[]

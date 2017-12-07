@@ -507,7 +507,7 @@ def advantage(me,opponent):
                         return 1.2
         if opponent[2].getColor()=="Gris":
                 if me[2].getTypeMove()=="Flier":
-                        print("-20% Malus de dégat pour désavantage archer pour ",[2].getName())
+                        print("-20% Malus de dégat pour désavantage archer pour ",me[2].getName())
                         return 0.8
         if adv[me[2].getColor()] == opponent[2].getColor():
                 print("20% Bonus de dégat pour avantage de couleur pour ",me[2].getName())
