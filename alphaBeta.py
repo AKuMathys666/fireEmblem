@@ -5,9 +5,14 @@ from caracter import *
 from copy import *
 from function import *
 from itertools import permutations
+import time
 
+
+#t_end = time.time() + 60 * 15
+#while time.time() < t_end:
+    #call alphaBeta
 def alphaBeta(player,opponent, A=-999, B=999):
-
+    
     return(player,opponent)
 
 def eval(playerBefore,opponentBefore,playerNow,opponentNow):

@@ -97,6 +97,7 @@ while continuer :
             fenetre=displayInfoStats(fenetre,player,opponent)
             turnPlayer=[]
         elif turn ==0:
+            blockPrint()
             time.sleep(1)
             player,opponent = makeRandomPlayerLeaf(player,opponent,t_map)
             fenetre=displayInfoBackground(fenetre,player,opponent)

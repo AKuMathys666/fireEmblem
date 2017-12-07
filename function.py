@@ -4,7 +4,15 @@ from random import *
 from caracter import *
 import pymysql
 from copy import *
+import sys, os
 
+# Disable
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
+
+# Restore
+def enablePrint():
+    sys.stdout = sys.__stdout__
 db= pymysql.connect(host="localhost",user="root",  
     password="",db="fire_emblem_db")
 
