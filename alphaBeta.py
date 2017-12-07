@@ -51,7 +51,7 @@ def makeRandomIALeaf(player,opponent,myMap):
             for perso in feuille[1]:
                 copyFeuille[1].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
             copyFeuille[1][selectedPlayer]=listMovePosible[i]
-            copyCible=getEnemieToAttack(copyFeuille[0],copyFeuille[0][selectedPlayer])
+            copyCible=getEnemieToAttack(copyFeuille[0],copyFeuille[1][selectedPlayer])
             if len(copyCible)!=0:
                 copySelectAtk = choice(range(len(copyCible)))
             else:
@@ -80,7 +80,6 @@ def makeRandomIALeaf(player,opponent,myMap):
             print("make atk")
             feuille[0][getCharName(feuille[0],cible[selectAtk][2].getName())],feuille[1][selectedPlayer]=attack(cible[selectAtk],feuille[1][selectedPlayer])
         playerToMove.remove(selectedPlayer)
-    return player,opponent
     return feuille[0],feuille[1]
 
 
@@ -106,7 +105,7 @@ def makeRandomPlayerLeaf(player,opponent,myMap):
             for perso in feuille[1]:
                 copyFeuille[1].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
             copyFeuille[1][selectedPlayer]=listMovePosible[i]
-            copyCible=getEnemieToAttack(copyFeuille[0],copyFeuille[0][selectedPlayer])
+            copyCible=getEnemieToAttack(copyFeuille[1],copyFeuille[0][selectedPlayer])
             if len(copyCible)!=0:
                 copySelectAtk = choice(range(len(copyCible)))
             else:
@@ -123,7 +122,7 @@ def makeRandomPlayerLeaf(player,opponent,myMap):
         selectedMove = choice(range(len(betterMove)))
         feuille[0][selectedPlayer]=betterMove[selectedMove] #make move
 
-        cible=getEnemieToAttack(feuille[0],feuille[0][selectedPlayer])
+        cible=getEnemieToAttack(feuille[1],feuille[0][selectedPlayer])
         if len(cible)!=0:
             selectAtk = choice(range(len(cible)))
         else:

@@ -7,6 +7,7 @@ from function import *
 from copy import *
 from alphaBeta import *
 import sys
+import time
 
 #crée une fenêtre 540*720 qui affiche l'image choisis
 fenetre = pygame.display.set_mode((900,720),RESIZABLE)
@@ -90,7 +91,14 @@ while continuer :
         pygame.display.flip()
         if turn == 1: #tour de l'IA
             #player,opponent = alphaBeta(player,opponent)
+            time.sleep(1)
             player,opponent = makeRandomIALeaf(player,opponent,t_map)
+            fenetre=displayInfoBackground(fenetre,player,opponent)
+            fenetre=displayInfoStats(fenetre,player,opponent)
+            turnPlayer=[]
+        elif turn ==0:
+            time.sleep(1)
+            player,opponent = makeRandomPlayerLeaf(player,opponent,t_map)
             fenetre=displayInfoBackground(fenetre,player,opponent)
             fenetre=displayInfoStats(fenetre,player,opponent)
             turnPlayer=[]
