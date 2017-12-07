@@ -75,7 +75,7 @@ print("------------------------------------------------------")
 print("--------------------- TOUR",numTour,"-------------------------")
 print("-------------------- Joueur 1 ------------------------")
 print("Tour de ",turnPlayer[ChoixPerso][2].getName())
-
+print(movePossible((player,opponent),player[0],t_map))
 #Boucle infinie
 while continuer :
     pygame.display.flip()

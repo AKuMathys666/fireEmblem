@@ -50,7 +50,6 @@ def samePos(x,y,player,opponent):
         return valReturn
         
 def deplacementValide(x,y,map,player,opponent,type_deplacement):
-        
         if type_deplacement=="Infanterie":
                 if map[x][y] in (0,3,6,7):
                         return samePos(x,y,player,opponent)
