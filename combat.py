@@ -49,12 +49,12 @@ positionOpponent=getArrayPos(t_map,7)
 player,opponent=initCharacters(positionPlayer,positionOpponent)
 
 for chara in player:
-    print(chara[2].display())
+    chara[2].display()
 
 print("------------------------------------------------------")
 print("Personnages du joueur 2 :")
 for chara in opponent:
-    print(chara[2].display())
+    chara[2].display()
 fenetre=displayInfoBackground(fenetre,player,opponent)
 fenetre=displayInfoStats(fenetre,player,opponent)
     
@@ -77,11 +77,6 @@ print("------------------------------------------------------")
 print("--------------------- TOUR",numTour,"-------------------------")
 print("-------------------- Joueur 1 ------------------------")
 print("Tour de ",turnPlayer[ChoixPerso][2].getName())
-#print(movePossible((player,opponent),player[0],t_map))
-#player,opponent = makeRandomLeaf(player,opponent,t_map)
-#fenetre=displayFight(fenetre,fond,player,opponent)
-#pygame.display.flip()
-#sys.exit()
 
 #Boucle infinie
 while continuer :
@@ -90,18 +85,15 @@ while continuer :
         fenetre=displayFight(fenetre,fond,player,opponent)
         pygame.display.flip()
         if turn == 1: #tour de l'IA
-            #player,opponent = alphaBeta(player,opponent)
-            time.sleep(1)
-            player,opponent = makeRandomIALeaf(player,opponent,t_map)
-            fenetre=displayInfoBackground(fenetre,player,opponent)
-            fenetre=displayInfoStats(fenetre,player,opponent)
-            turnPlayer=[]
-        elif turn ==0:
-            blockPrint()
-            time.sleep(1)
-            player,opponent = makeRandomPlayerLeaf(player,opponent,t_map)
-            fenetre=displayInfoBackground(fenetre,player,opponent)
-            fenetre=displayInfoStats(fenetre,player,opponent)
+            stackLeaf=list()
+            stackLeaf = evaluationIA(player,opponent,t_map)
+            for item in stackLeaf:
+                time.sleep(0.5)
+                player,opponent=item[0],item[1]
+                fenetre=displayFight(fenetre,fond,player,opponent)
+                fenetre=displayInfoBackground(fenetre,player,opponent)
+                fenetre=displayInfoStats(fenetre,player,opponent)
+                pygame.display.flip()
             turnPlayer=[]
         else:
             for event in pygame.event.get():
@@ -171,7 +163,6 @@ while continuer :
                             characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
                             pygame.display.flip()
                         if eventOccur:
-                            #print(turnPlayer[ChoixPerso][2].getName()," ",turnPlayer[ChoixPerso][2].getTypeMove()," ",int((turnPlayer[ChoixPerso][1].top)/90),int((turnPlayer[ChoixPerso][1].left)/90))
                             pygame.display.flip()
                             if mouvement==0:
                                 print("Voulez vous confirmer le déplacement de ",turnPlayer[ChoixPerso][2].getName(),"? y/n")
@@ -262,7 +253,7 @@ while continuer :
                                         i=0
                                         for keyname in arrayKey:
                                             if event2.type == KEYUP :
-                                                if event2.key == keyname :
+                                                if event2.key == keyname and i<= len(cible):
                                                     if turn ==0:
                                                         opponent[getCharName(opponent,cible[i][2].getName())],turnPlayer[ChoixPerso]=attack(cible[i],turnPlayer[ChoixPerso])
                                                         player[getCharName(player,turnPlayer[ChoixPerso][2].getName())][2].hp=turnPlayer[ChoixPerso][2].getHp()

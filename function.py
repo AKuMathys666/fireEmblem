@@ -6,13 +6,14 @@ import pymysql
 from copy import *
 import sys, os
 
+TEMP=copy(sys.stdout)
 # Disable
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
 
 # Restore
 def enablePrint():
-    sys.stdout = sys.__stdout__
+    sys.stdout = TEMP
 db= pymysql.connect(host="localhost",user="root",  
     password="",db="fire_emblem_db")
 

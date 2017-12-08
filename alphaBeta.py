@@ -8,16 +8,47 @@ from itertools import permutations
 import time
 
 
-#t_end = time.time() + 60 * 15
-#while time.time() < t_end:
-    #call alphaBeta
-def alphaBeta(player,opponent, A=-999, B=999):
-    
-    return(player,opponent)
+
+def evaluationIA(player,opponent,myMap):
+    startNode=(player[:],opponent[:])
+    currentBestAction=list()
+    currentBestAction=makeRandomIALeaf(startNode[0],startNode[1],myMap)
+    afterPlayerTurn=makeRandomPlayerLeaf(currentBestAction[-1][0],currentBestAction[-1][1],myMap)
+    bestEval=eval(startNode[0],startNode[1],afterPlayerTurn[0],afterPlayerTurn[1])
+    t_end = time.time() + 3 # 3 secondes de process
+    nbIa=0
+    nbPlayer=0
+    while time.time() < t_end:
+        newIaLeaf=list()
+        newIaLeaf=makeRandomIALeaf(startNode[0],startNode[1],myMap)
+        nbIa+=1
+        currentEval=-9999
+        for i in range(5):
+            playerLeaf=makeRandomPlayerLeaf(newIaLeaf[-1][0],newIaLeaf[-1][1],myMap)
+            nbPlayer+=1
+            playerLeafEval=eval(startNode[0],startNode[1],playerLeaf[0],playerLeaf[1])
+            if currentEval != max(currentEval,playerLeafEval):
+                currentEval=max(currentEval,playerLeafEval)
+        if bestEval != min(bestEval,currentEval):
+            bestEval=min(bestEval,currentEval)
+            currentBestAction=newIaLeaf
+    return currentBestAction
 
 def eval(playerBefore,opponentBefore,playerNow,opponentNow):
-
-    return 0
+    playerTotalHpBefore=getSumHp(playerBefore)
+    playerTotalHpAfter=getSumHp(playerNow)
+    iATotalHpBefore=getSumHp(opponentBefore)
+    iATotalHpAfter=getSumHp(opponentNow)
+    if iATotalHpAfter==0:
+        return 9999
+    if playerTotalHpAfter==0:
+        return -9999
+    playerLose=playerTotalHpBefore-playerTotalHpAfter
+    iALose=iATotalHpBefore-iATotalHpAfter
+    playerRatio=playerTotalHpAfter/playerTotalHpBefore
+    iARatio=iATotalHpAfter/iATotalHpBefore
+    val=int(max(playerLose,iALose)*(playerRatio-iARatio))
+    return val
 
 def anyoneWin(player,opponent):
     sumPlayerHP=getSumHp(player)
@@ -35,108 +66,116 @@ def getSumHp(listeCharacter):
     return sumHP
 
 def makeRandomIALeaf(player,opponent,myMap):
-    feuille =(player[:],opponent[:])
+    blockPrint()
+    feuille=[[],[]]
+    for perso in player:
+        feuille[0].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
+    for perso in opponent:
+        feuille[1].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
     
     #Opponent turn
     playerToMove = list(range(len(opponent)))
-    print(playerToMove)
     listAction=[]
-    while playerToMove :
+    while playerToMove and anyoneWin(feuille[0],feuille[1])==0:
         selectedPlayer = choice(playerToMove)
-        listAction.append(selectedPlayer)
-        print(feuille[1][selectedPlayer])
-        listMovePosible=movePossible(feuille,feuille[1][selectedPlayer],myMap)
-        # permet de valoriser les cases ou une attaque en leurs donnant un poid 4 fois plus élevé que les casses ou il n'y a personne à attaquer
-        betterMove=[]
-        i=0
-        for move in listMovePosible:
-            copyFeuille=[[],[]]
-            for perso in feuille[0]:
-                copyFeuille[0].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
-            for perso in feuille[1]:
-                copyFeuille[1].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
-            copyFeuille[1][selectedPlayer]=listMovePosible[i]
-            copyCible=getEnemieToAttack(copyFeuille[0],copyFeuille[1][selectedPlayer])
-            if len(copyCible)!=0:
-                copySelectAtk = choice(range(len(copyCible)))
-            else:
-                copySelectAtk=0
-            #make an attak
-            if copySelectAtk!=0:
-                betterMove.append(move)
-                betterMove.append(move)
-                betterMove.append(move)
-                betterMove.append(move)
-            else:
-                betterMove.append(move)
-            i+=1
-        selectedMove = choice(range(len(betterMove)))
-        feuille[1][selectedPlayer]=betterMove[selectedMove] #make move
+        if feuille[1][selectedPlayer][2].getHp()!=0:
+            listMovePosible=movePossible(feuille,feuille[1][selectedPlayer],myMap)
+            # permet de valoriser les cases ou une attaque en leurs donnant un poid 4 fois plus élevé que les casses ou il n'y a personne à attaquer
+            betterMove=[]
+            i=0
+            for move in listMovePosible:
+                copyFeuille=[[],[]]
+                for perso in feuille[0]:
+                    copyFeuille[0].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
+                for perso in feuille[1]:
+                    copyFeuille[1].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
+                copyFeuille[1][selectedPlayer]=listMovePosible[i]
+                copyCible=getEnemieToAttack(copyFeuille[0],copyFeuille[1][selectedPlayer])
+                if len(copyCible)!=0:
+                    copySelectAtk = choice(range(len(copyCible)))
+                else:
+                    copySelectAtk=0
+                if copySelectAtk!=0:
+                    betterMove.append(move)
+                    betterMove.append(move)
+                    betterMove.append(move)
+                    betterMove.append(move)
+                else:
+                    betterMove.append(move)
+                i+=1
+            selectedMove = choice(range(len(betterMove)))
+            #make move
+            feuille[1][selectedPlayer]=betterMove[selectedMove]
+            listAction.append((feuille[0][:],feuille[1][:]))
 
-        cible=getEnemieToAttack(feuille[0],feuille[1][selectedPlayer])
-        print(len(cible))
-        if len(cible)!=0:
-            selectAtk = choice(range(len(cible)))
-            print(selectAtk)
-        else:
-            selectAtk=-1
-        #make an attak
-        if selectAtk!=-1:
-            print("make atk")
-            feuille[0][getCharName(feuille[0],cible[selectAtk][2].getName())],feuille[1][selectedPlayer]=attack(cible[selectAtk],feuille[1][selectedPlayer])
-        playerToMove.remove(selectedPlayer)
-    return feuille[0],feuille[1]
+            cible=getEnemieToAttack(feuille[0],feuille[1][selectedPlayer])
+            if len(cible)!=0:
+                selectAtk = choice(range(len(cible)))
+            else:
+                selectAtk=-1
+            #make an attak
+            if selectAtk!=-1:
+                feuille[0][getCharName(feuille[0],cible[selectAtk][2].getName())],feuille[1][selectedPlayer]=attack(cible[selectAtk],feuille[1][selectedPlayer])
+            playerToMove.remove(selectedPlayer)
+            listAction.append((feuille[0][:],feuille[1][:]))
+    enablePrint()
+    return listAction
 
 
 def makeRandomPlayerLeaf(player,opponent,myMap):
-    feuille =(player[:],opponent[:])
+    blockPrint()
+    feuille=[[],[]]
+    for perso in player:
+        feuille[0].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
+    for perso in opponent:
+        feuille[1].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
     
     #Player turn
     playerToMove = list(range(len(player)))
-    print(playerToMove)
     listAction=[]
     while playerToMove :
         selectedPlayer = choice(playerToMove)
-        listAction.append(selectedPlayer)
-        print(feuille[0][selectedPlayer])
-        listMovePosible=movePossible(feuille,feuille[0][selectedPlayer],myMap)
-        # permet de valoriser les cases ou une attaque en leurs donnant un poid 4 fois plus élevé que les casses ou il n'y a personne à attaquer
-        betterMove=[]
-        i=0
-        for move in listMovePosible:
-            copyFeuille=[[],[]]
-            for perso in feuille[0]:
-                copyFeuille[0].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
-            for perso in feuille[1]:
-                copyFeuille[1].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
-            copyFeuille[1][selectedPlayer]=listMovePosible[i]
-            copyCible=getEnemieToAttack(copyFeuille[1],copyFeuille[0][selectedPlayer])
-            if len(copyCible)!=0:
-                copySelectAtk = choice(range(len(copyCible)))
-            else:
-                copySelectAtk=0
-            #make an attak
-            if copySelectAtk!=0:
-                betterMove.append(move)
-                betterMove.append(move)
-                betterMove.append(move)
-                betterMove.append(move)
-            else:
-                betterMove.append(move)
-            i+=1
-        selectedMove = choice(range(len(betterMove)))
-        feuille[0][selectedPlayer]=betterMove[selectedMove] #make move
+        if feuille[1][selectedPlayer][2].getHp()!=0:
+            listAction.append(selectedPlayer)
+            listMovePosible=movePossible(feuille,feuille[0][selectedPlayer],myMap)
+            # permet de valoriser les cases ou une attaque en leurs donnant un poid 4 fois plus élevé que les casses ou il n'y a personne à attaquer
+            betterMove=[]
+            i=0
+            for move in listMovePosible:
+                copyFeuille=[[],[]]
+                for perso in feuille[0]:
+                    copyFeuille[0].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
+                for perso in feuille[1]:
+                    copyFeuille[1].append([pygame.Surface.copy(perso[0]),deepcopy(perso[1]),deepcopy(perso[2])])
+                copyFeuille[1][selectedPlayer]=listMovePosible[i]
+                copyCible=getEnemieToAttack(copyFeuille[1],copyFeuille[0][selectedPlayer])
+                if len(copyCible)!=0:
+                    copySelectAtk = choice(range(len(copyCible)))
+                else:
+                    copySelectAtk=0
+                #make an attak
+                if copySelectAtk!=0:
+                    betterMove.append(move)
+                    betterMove.append(move)
+                    betterMove.append(move)
+                    betterMove.append(move)
+                else:
+                    betterMove.append(move)
+                i+=1
+            selectedMove = choice(range(len(betterMove)))
+            feuille[0][selectedPlayer]=betterMove[selectedMove] #make move
 
-        cible=getEnemieToAttack(feuille[1],feuille[0][selectedPlayer])
-        if len(cible)!=0:
-            selectAtk = choice(range(len(cible)))
-        else:
-            selectAtk=0
-        #make an attak
-        if selectAtk!=0:
-            feuille[1][getCharName(feuille[1],cible[selectAtk][2].getName())],feuille[0][selectedPlayer]=attack(cible[selectAtk],feuille[0][selectedPlayer])
-        playerToMove.remove(selectedPlayer)
-    return feuille[0],feuille[1]
+            cible=getEnemieToAttack(feuille[1],feuille[0][selectedPlayer])
+            if len(cible)!=0:
+                selectAtk = choice(range(len(cible)))
+            else:
+                selectAtk=0
+            #make an attak
+            if selectAtk!=0:
+                feuille[1][getCharName(feuille[1],cible[selectAtk][2].getName())],feuille[0][selectedPlayer]=attack(cible[selectAtk],feuille[0][selectedPlayer])
+            playerToMove.remove(selectedPlayer)
+    enablePrint()
+    return feuille[0][:],feuille[1][:]
         
         
 
@@ -154,7 +193,6 @@ def movePossible(feuille,selectedPlayer,myMap):
     playerListAtPos.append(selectedPlayer)
     listPos=[]
     listPos.append(selectedPlayer[1])
-    print("pos :",int((selectedPlayer[1].top+90)/90)," ",int((selectedPlayer[1].left)/90))
     for characters in playerListAtPos:
         mouvement=copy(characters[2].getMove())
         if mouvement > 0:
@@ -236,11 +274,8 @@ def movePossible(feuille,selectedPlayer,myMap):
                         if character[1] not in listPos:
                             listPos.append(character[1])
                             playerListAtPos.append(character)
-    #for item in listPos:
-        #print(int((item.top+90)/90)," ",int((item.left)/90))
     for item in playerListAtPos:
         item[2].moves=mouvementDepart
-        #print(item[2].getMove())
     return playerListAtPos
 
     
