@@ -4,7 +4,16 @@ from random import *
 from caracter import *
 import pymysql
 from copy import *
+import sys, os
 
+TEMP=copy(sys.stdout)
+# Disable
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
+
+# Restore
+def enablePrint():
+    sys.stdout = TEMP
 db= pymysql.connect(host="localhost",user="root",  
     password="",db="fire_emblem_db")
 
@@ -50,7 +59,6 @@ def samePos(x,y,player,opponent):
         return valReturn
         
 def deplacementValide(x,y,map,player,opponent,type_deplacement):
-        
         if type_deplacement=="Infanterie":
                 if map[x][y] in (0,3,6,7):
                         return samePos(x,y,player,opponent)
@@ -60,7 +68,7 @@ def deplacementValide(x,y,map,player,opponent,type_deplacement):
         elif type_deplacement=="Flier":
                 if map[x][y] in (0,2,3,6,7):
                         return samePos(x,y,player,opponent)
-        else:#Tank
+        else:              #Tank
                 if map[x][y] in (0,3,6,7):
                         return samePos(x,y,player,opponent)
         return False
@@ -508,7 +516,7 @@ def advantage(me,opponent):
                         return 1.2
         if opponent[2].getColor()=="Gris":
                 if me[2].getTypeMove()=="Flier":
-                        print("-20% Malus de dégat pour désavantage archer pour ",me.[2].getName())
+                        print("-20% Malus de dégat pour désavantage archer pour ",me[2].getName())
                         return 0.8
         if adv[me[2].getColor()] == opponent[2].getColor():
                 print("20% Bonus de dégat pour avantage de couleur pour ",me[2].getName())
