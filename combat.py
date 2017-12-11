@@ -17,6 +17,9 @@ fond=getFond(aleatoire)
     
 fenetre.blit(fond,(0,0))
 
+pygame.mixer.music.load('Brave 1.mp3')
+pygame.mixer.music.play(loops=-1)
+
 t_map=deplacement(aleatoire)
 for map in t_map:
     print(map)
