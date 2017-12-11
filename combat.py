@@ -72,6 +72,23 @@ mouvement=copy(turnPlayer[ChoixPerso][2].getMove())
 characterPosBeforeTurn=copy(turnPlayer[ChoixPerso][1])
 
 numTour=1
+print("Voulez vous jouer en:")
+print("1 - Joueur vs Joueur")
+print("2 - Joueur vs IA")
+print("3 - Joueur vs IA(completement random, mais plus stable)")
+gameAnswer=True
+while gameAnswer:
+    for event in pygame.event.get():
+        if event.type == KEYUP :
+            if event.key == K_1 :
+                game=1
+                gameAnswer=False
+            if event.key == K_2 :
+                game=2
+                gameAnswer=False
+            if event.key == K_3 :
+                game=3
+                gameAnswer=False
 
 print("------------------------------------------------------")
 print("--------------------- TOUR",numTour,"-------------------------")
@@ -84,18 +101,22 @@ while continuer :
     while len(turnPlayer)!=0 :
         fenetre=displayFight(fenetre,fond,player,opponent)
         pygame.display.flip()
-        if turn == 1: #tour de l'IA
-            stackLeaf=list()
-            stackLeaf = evaluationIA(player,opponent,t_map)
-            for item in stackLeaf:
-                time.sleep(0.5)
-                player,opponent=item[0],item[1]
-                fenetre=displayFight(fenetre,fond,player,opponent)
-                fenetre=displayInfoBackground(fenetre,player,opponent)
-                fenetre=displayInfoStats(fenetre,player,opponent)
-                pygame.display.flip()
-            turnPlayer=[]
-        else:
+        if game != 1:
+            if turn == 1: #tour de l'IA
+                stackLeaf=list()
+                if game==2:
+                    stackLeaf = evaluationIA(player,opponent,t_map)
+                if game == 3:
+                    stackLeaf = makeRandomIALeaf(player,opponent,t_map)
+                for item in stackLeaf:
+                    time.sleep(0.5)
+                    player,opponent=item[0],item[1]
+                    fenetre=displayFight(fenetre,fond,player,opponent)
+                    fenetre=displayInfoBackground(fenetre,player,opponent)
+                    fenetre=displayInfoStats(fenetre,player,opponent)
+                    pygame.display.flip()
+                turnPlayer=[]
+        if game ==1 or turn == 0:
             for event in pygame.event.get():
                 if mouvement != 0:
                     if event.type == QUIT :
